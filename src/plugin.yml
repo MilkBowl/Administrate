@@ -4,7 +4,7 @@ version: 1.0
 author: Sleaker
 commands:
     admin:
-        aliases: at
+        aliases: [at, adminmode]
         description: Toggles administration mode
     stealth:
         description: Toggles a player to appear offline
@@ -17,3 +17,6 @@ commands:
         description: returns you to your saved location
     saveloc:
         description: saves your current location
+    adminstatus:
+        aliases: as
+        description: shows you what options you have active

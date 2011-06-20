@@ -23,29 +23,29 @@ public class Administrate extends JavaPlugin {
     private AdminEntityListener entityListener = new AdminEntityListener(this);
     public AdminHandler adminHandler;
     public CommandExecutor cmdExec;
-    
+
     public static String plugName = "[Administrate]";
     public static final String playerDataPath = "plugins/Administrate/players/";
     Configuration globalConfig;
-    
-    
+
+
     public void onDisable() {
-        
+
     }
-    
+
     public void onEnable() {
         //Setup Permissions 
         AdminPermissions.initialize(getServer());
-        
+
         //Make our directories.
         File dir = new File(playerDataPath);
         dir.mkdirs();
-        
+
         if (AdminPermissions.isInvalidHandler()) {
             log.warning(plugName + " - Could not detect a permissions plugin, disabling.");
             getServer().getPluginManager().disablePlugin(this);
         }
-        
+
         //Register our events
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvent(Event.Type.PLAYER_JOIN, playerListener, Priority.Highest, this);
@@ -55,9 +55,9 @@ public class Administrate extends JavaPlugin {
         pm.registerEvent(Event.Type.ENTITY_DAMAGE, entityListener, Priority.Highest, this);
         pm.registerEvent(Event.Type.ENTITY_COMBUST, entityListener, Priority.Highest, this);
         pm.registerEvent(Event.Type.ENTITY_TARGET, entityListener, Priority.Highest, this);
-        
-        //Register our commands
+
         adminHandler = new AdminHandler(this);
+        //Register our commands
         cmdExec = new AdminCommandHandler(this);
         getCommand("stealth").setExecutor(cmdExec);
         getCommand("vanish").setExecutor(cmdExec);
@@ -65,10 +65,11 @@ public class Administrate extends JavaPlugin {
         getCommand("god").setExecutor(cmdExec);
         getCommand("return").setExecutor(cmdExec);
         getCommand("saveloc").setExecutor(cmdExec);
-        
+        getCommand("adminstatus").setExecutor(cmdExec);
+
 
     }
-    
+
     public AdminHandler getAdminHandler() {
         return adminHandler;
     }    

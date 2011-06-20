@@ -26,6 +26,7 @@ public class AdminPermissions {
     public static final String noAggro = "administrate.noaggro";
     public static final String returnPerm = "administrate.return";
     public static final String seeInvis = "administrate.seeinvis";
+    public static final String status = "administrate.status";
     
     public static Logger log = Logger.getLogger("Minecraft");
     private static PermissionsHandler handler;

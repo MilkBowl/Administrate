@@ -55,9 +55,38 @@ public class AdminCommandHandler implements CommandExecutor {
             } else if (command.getName().equals("return")) {
                 returnLoc(player);
                 return true;
+            } else if (command.getName().equals("adminstatus")) {
+                adminStatus(player, args);
+                return true;
             }
         }
         return false;
+    }
+    
+    /**
+     * Lists what admin modes a player currently has.
+     * 
+     * @param player
+     * @param args
+     */
+    public void adminStatus (Player player, String[] args) {
+        if (AdminPermissions.has(player, AdminPermissions.status)) {
+            if (args.length < 1) {
+                //send string of info for this player;
+                player.sendMessage(admins.infoString(player.getName()));
+            } else {
+                for (Player pStatus : plugin.getServer().getOnlinePlayers()) {
+                    if (pStatus.getName().equalsIgnoreCase(args[0])){
+                        //Send infostring for this player
+                        player.sendMessage(pStatus.getName());
+                    } else {
+                        player.sendMessage("Could not find a player named " + args[0]);
+                    }
+                }
+            }
+        } else {
+            AdminPermissions.noPermsMessage(player);
+        }
     }
     
     /**

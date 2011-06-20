@@ -26,13 +26,7 @@ public class AdminPlayerListener extends PlayerListener {
     }
 
     private AdminHandler admins = new AdminHandler(plugin);
-
-    public ChatColor colorize (boolean tf) {
-        if (tf)
-            return ChatColor.GREEN;
-        else
-            return ChatColor.RED;
-    }
+    
     public void onPlayerRespawn(PlayerRespawnEvent event) {
         Player player = event.getPlayer();
         String playerName = player.getName();
@@ -62,10 +56,10 @@ public class AdminPlayerListener extends PlayerListener {
                 message += ChatColor.RED + " StealthLog ";
 
             //Colorize our Settings for output
-            message += colorize(admins.isInvisible(playerName)) + " Invisible ";
-            message += colorize(admins.isNoPickup(playerName)) + " NoPickup ";
-            message += colorize(admins.isGod(playerName)) + " GodMode ";
-            message += colorize(admins.isAdminMode(playerName)) + " AdminMode ";
+            message += admins.colorize(admins.isInvisible(playerName)) + " Invisible ";
+            message += admins.colorize(admins.isNoPickup(playerName)) + " NoPickup ";
+            message += admins.colorize(admins.isGod(playerName)) + " GodMode ";
+            message += admins.colorize(admins.isAdminMode(playerName)) + " AdminMode ";
 
             //Send the player a delayed message of what options they have selected
             plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new DelayedMessage(player, message), 10);

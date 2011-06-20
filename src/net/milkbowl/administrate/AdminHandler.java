@@ -31,6 +31,34 @@ public class AdminHandler {
         
     }
     
+    public String infoString(String playerName) {
+        if (!admins.containsKey(playerName))
+            return null;
+        else {
+            String message = playerName + " has the following options: ";
+            //Colorize our Settings for output
+            message += colorize(isStealthed(playerName)) + " StealthMode ";
+            message += colorize(isInvisible(playerName)) + " Invisible ";
+            message += colorize(isNoPickup(playerName)) + " NoPickup ";
+            message += colorize(isGod(playerName)) + " GodMode ";
+            message += colorize(isAdminMode(playerName)) + " AdminMode ";
+            return message;
+        }
+    }
+    
+    /**
+     * colorize a string
+     * 
+     * @param tf
+     * @return
+     */
+    public ChatColor colorize (boolean tf) {
+        if (tf)
+            return ChatColor.GREEN;
+        else
+            return ChatColor.RED;
+    }
+    
     /**
      * Checks if a player is in the admin map
      * 
