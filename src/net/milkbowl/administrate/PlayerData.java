@@ -140,10 +140,10 @@ public class PlayerData {
      */
     public String locationString() {
         String split = ",";
-        if (world != null && xyz != null)
-            return world + split + xyz[0] + split + xyz[1] + split + xyz[2];
+        if (world != null || xyz != null)
+            return world + split + " x: " + xyz[0] + split + " y: " + xyz[1] + split + " z: " + xyz[2];
         else
-            return null;
+            return "nowhere";
     }
 
     /**

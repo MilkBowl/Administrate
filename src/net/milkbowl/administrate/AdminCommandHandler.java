@@ -78,7 +78,8 @@ public class AdminCommandHandler implements CommandExecutor {
                 for (Player pStatus : plugin.getServer().getOnlinePlayers()) {
                     if (pStatus.getName().equalsIgnoreCase(args[0])){
                         //Send infostring for this player
-                        player.sendMessage(pStatus.getName());
+                        player.sendMessage(admins.infoString(pStatus.getName()));
+                        player.sendMessage(pStatus.getName() + " is currently saved to: " + admins.getLocationString(pStatus.getName()));
                     } else {
                         player.sendMessage("Could not find a player named " + args[0]);
                     }

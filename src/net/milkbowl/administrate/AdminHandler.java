@@ -33,7 +33,7 @@ public class AdminHandler {
     
     public String infoString(String playerName) {
         if (!admins.containsKey(playerName))
-            return null;
+            return "That player is not an admin, or has no modes currently active.";
         else {
             String message = playerName + " has the following options: ";
             //Colorize our Settings for output
