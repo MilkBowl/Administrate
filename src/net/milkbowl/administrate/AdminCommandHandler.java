@@ -70,11 +70,11 @@ public class AdminCommandHandler implements CommandExecutor {
      * @param args
      */
     public void adminStatus (Player player, String[] args) {
-        if (AdminPermissions.has(player, AdminPermissions.status)) {
+        if (AdminPermissions.has(player, AdminPermissions.adminModePerm) || AdminPermissions.has(player, AdminPermissions.godPerm) || AdminPermissions.has(player, AdminPermissions.returnPerm) || AdminPermissions.has(player, AdminPermissions.stealthPerm) || AdminPermissions.has(player, AdminPermissions.vanishPerm)) {
             if (args.length < 1) {
                 //send string of info for this player;
                 player.sendMessage(admins.infoString(player.getName()));
-            } else {
+            } else if (AdminPermissions.has(player, AdminPermissions.status)) {
                 for (Player pStatus : plugin.getServer().getOnlinePlayers()) {
                     if (pStatus.getName().equalsIgnoreCase(args[0])){
                         //Send infostring for this player
