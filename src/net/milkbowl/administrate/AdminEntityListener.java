@@ -51,8 +51,10 @@ public class AdminEntityListener extends EntityListener {
         
         if (event.getEntity() instanceof Player) {
             String playerName = ((Player) event.getEntity()).getName();
-            if (admins.isGod(playerName))
+            if (admins.isGod(playerName)) {
                 event.setCancelled(true);
+                ((Player) event.getEntity()).setFireTicks(0);
+            }
         }
     }
 }
