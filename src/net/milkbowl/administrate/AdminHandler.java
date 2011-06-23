@@ -17,17 +17,16 @@ import org.bukkit.entity.Player;
  * @author sleaker
  *
  */
-public class AdminHandler {
-    public static Map<String, PlayerData> admins = new HashMap<String, PlayerData>();
+public final class AdminHandler {
+    private static Map<String, PlayerData> admins = new HashMap<String, PlayerData>();
     
-    public static Administrate plugin;
+    private static Administrate plugin;
 
-    public AdminHandler(Administrate plugin) {
+    protected AdminHandler(Administrate plugin) {
         AdminHandler.plugin = plugin;
     }
     
     public AdminHandler() {
-        
     }
     
     public String infoString(String playerName) {
