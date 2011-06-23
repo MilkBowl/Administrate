@@ -22,9 +22,8 @@ public class AdminHandler {
     
     public static Administrate plugin;
 
-    @SuppressWarnings("static-access")
     public AdminHandler(Administrate plugin) {
-        this.plugin = plugin;
+        AdminHandler.plugin = plugin;
     }
     
     public AdminHandler() {
