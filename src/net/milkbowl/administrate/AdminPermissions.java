@@ -65,11 +65,10 @@ public class AdminPermissions {
         }
     }
 
-    @SuppressWarnings("static-access")
     public static boolean permission(Player player, String permission, boolean defaultPerm) {
         switch (handler) {
         case PERMISSIONSEX:
-            return ((PermissionsEx) permissionPlugin).getPermissionManager().has(player, permission);
+            return PermissionsEx.getPermissionManager().has(player, permission);
         case PERMISSIONS3:
             return ((Permissions) permissionPlugin).getHandler().has(player, permission);
         case PERMISSIONS:
@@ -84,11 +83,10 @@ public class AdminPermissions {
     /*
      * Return an info double
      */
-    @SuppressWarnings("static-access")
     public static double infoDouble(Player player, String nodeName) {
         switch (handler) {
         case PERMISSIONSEX:
-            return ((PermissionsEx) permissionPlugin).getPermissionManager().getUser(player.getName()).getOptionDouble(nodeName, player.getWorld().getName(), -1);
+            return PermissionsEx.getPermissionManager().getUser(player.getName()).getOptionDouble(nodeName, player.getWorld().getName(), -1);
         case PERMISSIONS3:
             return ((Permissions) permissionPlugin).getHandler().getPermissionDouble(player.getWorld().getName(), player.getName(), nodeName);
         case PERMISSIONS:
@@ -100,11 +98,10 @@ public class AdminPermissions {
         }
     }
 
-    @SuppressWarnings("static-access")
     public static boolean has(Player player, String perm) {
         switch (handler) {
         case PERMISSIONSEX:
-            return ((PermissionsEx) permissionPlugin).getPermissionManager().has(player, perm);
+            return PermissionsEx.getPermissionManager().has(player, perm);
         case PERMISSIONS3:
             return ((Permissions) permissionPlugin).getHandler().has(player, perm);
         case PERMISSIONS:
