@@ -26,10 +26,7 @@ public final class AdminHandler {
         AdminHandler.plugin = plugin;
     }
     
-    public AdminHandler() {
-    }
-    
-    public String infoString(String playerName) {
+    public static String infoString(String playerName) {
         if (!admins.containsKey(playerName))
             return "That player is not an admin, or has no modes currently active.";
         else {
@@ -50,7 +47,7 @@ public final class AdminHandler {
      * @param tf
      * @return
      */
-    public ChatColor colorize (boolean tf) {
+    public static ChatColor colorize (boolean tf) {
         if (tf)
             return ChatColor.GREEN;
         else
@@ -63,7 +60,7 @@ public final class AdminHandler {
      * @param playerName
      * @return boolean - true if player is a key in the admin map.
      */
-    public boolean contains(String playerName) {
+    public static boolean contains(String playerName) {
         return admins.containsKey(playerName);
     }
 
@@ -71,7 +68,7 @@ public final class AdminHandler {
      * @param playerName
      * @return boolean - true if the player was added to the map properly. false if the player is already in the mapping.
      */
-    public boolean add(String playerName) {
+    public static boolean add(String playerName) {
         if (contains(playerName))
             return false;
         else {
@@ -85,7 +82,7 @@ public final class AdminHandler {
      * @param origin - Location
      * @return - true if the player location was set in the admin map
      */
-    public boolean setOrigin(String playerName, Location origin) {
+    public static boolean setOrigin(String playerName, Location origin) {
         if (!contains(playerName))
             return false;
         else {
@@ -102,7 +99,7 @@ public final class AdminHandler {
      * @param val - boolean t/f
      * @return true if setting was successful
      */
-    public boolean setGod(String playerName, boolean val) {
+    public static boolean setGod(String playerName, boolean val) {
         if (!contains(playerName))
             return false;
         else {
@@ -119,7 +116,7 @@ public final class AdminHandler {
      * @param val - boolean t/f
      * @return true if setting was successful
      */
-    public boolean setInvis(String playerName, boolean val) {
+    public static boolean setInvis(String playerName, boolean val) {
         if (!contains(playerName))
             return false;
         else {
@@ -137,7 +134,7 @@ public final class AdminHandler {
      * @param val - boolean t/f
      * @return true if setting was successful
      */
-    public boolean setNoPickup(String playerName, boolean val) {
+    public static boolean setNoPickup(String playerName, boolean val) {
         if (!contains(playerName))
             return false;
         else {
@@ -155,7 +152,7 @@ public final class AdminHandler {
      * @param val - boolean t/f
      * @return true if setting was successful
      */
-    public boolean setStealthed(String playerName, boolean val) {
+    public static boolean setStealthed(String playerName, boolean val) {
         if (!contains(playerName))
             return false;
         else {
@@ -173,7 +170,7 @@ public final class AdminHandler {
      * @param val - boolean t/f
      * @return true if setting was successful
      */
-    public boolean setAdminMode(String playerName, boolean val) {
+    public static boolean setAdminMode(String playerName, boolean val) {
         if (!contains(playerName))
             return false;
         else {
@@ -187,7 +184,7 @@ public final class AdminHandler {
      * @param playerName
      * @return PlayerData
      */
-    public PlayerData get(String playerName) {
+    public static PlayerData get(String playerName) {
         if (admins.containsKey(playerName))
             return admins.get(playerName);
         else 
@@ -198,7 +195,7 @@ public final class AdminHandler {
      * @param playerName
      * @return true if the player is currently in God mode
      */
-    public boolean isGod(String playerName) {
+    public static boolean isGod(String playerName) {
         if (contains(playerName))
             return admins.get(playerName).isGod();
         else
@@ -209,7 +206,7 @@ public final class AdminHandler {
      * @param playerName
      * @return true if the player is currently in admin mode
      */
-    public boolean isAdminMode(String playerName) {
+    public static boolean isAdminMode(String playerName) {
         if (contains(playerName))
             return admins.get(playerName).isAdminMode();
         else
@@ -220,7 +217,7 @@ public final class AdminHandler {
      * @param playerName
      * @return true if the player is currently invisible
      */
-    public boolean isInvisible(String playerName) {
+    public static boolean isInvisible(String playerName) {
         if (contains(playerName))
             return admins.get(playerName).isInvisible();
         else
@@ -232,7 +229,7 @@ public final class AdminHandler {
      * @param playerName
      * @return true if the player is currently in nopickup mode
      */
-    public boolean isNoPickup(String playerName) {
+    public static boolean isNoPickup(String playerName) {
         if (contains(playerName))
             return admins.get(playerName).isNoPickup();
         else
@@ -243,14 +240,14 @@ public final class AdminHandler {
      * @param playerName
      * @return true if the player is currently in stealth mode
      */
-    public boolean isStealthed (String playerName) {
+    public static boolean isStealthed (String playerName) {
         if (contains(playerName))
             return admins.get(playerName).isStealthed();
         else
             return false;
     }
 
-    public String getLocationString (String playerName) {
+    public static String getLocationString (String playerName) {
         if (contains(playerName))
             return admins.get(playerName).locationString();
         else
@@ -263,7 +260,7 @@ public final class AdminHandler {
      * @param playerName
      * @return boolean - true if the load was successful
      */
-    public boolean loadPlayer (String playerName) {
+    public static boolean loadPlayer (String playerName) {
         if (!contains(playerName))
             add(playerName);
 
@@ -276,7 +273,7 @@ public final class AdminHandler {
      * @param playerName
      * @return boolean - true if the save process was successful
      */
-    public boolean savePlayer (String playerName) {
+    public static boolean savePlayer (String playerName) {
         if (!contains(playerName))
             return false;
         else
@@ -289,7 +286,7 @@ public final class AdminHandler {
      * @param Player - the player to teleport.
      * @return boolean - if the task was scehduled
      */
-    public boolean returnPlayer (Player player) {
+    protected boolean returnPlayer (Player player) {
         if (!contains(player.getName()))
             return false;
         else if (admins.get(player.getName()).getWorld() == null || admins.get(player.getName()).getXyz() == null )
@@ -304,7 +301,7 @@ public final class AdminHandler {
      * Runnable Class to return a player back to their saved origin.
      * 
      */
-    public class ReturnToOrigin implements Runnable {
+    private class ReturnToOrigin implements Runnable {
 
         private Player player;
 
@@ -331,7 +328,7 @@ public final class AdminHandler {
      * Makes a player go invisible for all online players
      * 
      */
-    public void goInvisible(Player player) {
+    protected void goInvisible(Player player) {
         if (player == null || !player.isOnline())
             return;
         
@@ -344,7 +341,7 @@ public final class AdminHandler {
      * 
      * @param player
      */
-    public void goVisible(Player player) {
+    protected void goVisible(Player player) {
         if (player == null || !player.isOnline())
             return;
         
@@ -356,7 +353,7 @@ public final class AdminHandler {
      * Checks all players on the server and updates their visibilty
      * 
      */
-    public void goAllInvisible() {
+    protected void goAllInvisible() {
         for (Player pInvis : plugin.getServer().getOnlinePlayers()) {
             if (isInvisible(pInvis.getName()))
                 goInvisible(pInvis);
@@ -369,7 +366,7 @@ public final class AdminHandler {
      * @param pInvis
      * @param pDummy
      */
-    public void invisible (Player pInvis, Player pDummy) {
+    protected void invisible (Player pInvis, Player pDummy) {
         //If either object is null or if we selected the same player - ignore this set.
         if (pInvis == null || pDummy == null || pInvis.equals(pDummy) )
             return;
@@ -388,7 +385,7 @@ public final class AdminHandler {
      * 
      * @param pDummy
      */
-    public void updateInvisibles(Player pDummy) {
+    protected void updateInvisibles(Player pDummy) {
         for (Player pInvis : plugin.getServer().getOnlinePlayers())
             if (isInvisible(pInvis.getName()))
                 invisible(pInvis, pDummy);
@@ -415,7 +412,7 @@ public final class AdminHandler {
         ((CraftPlayer) pDummy).getHandle().netServerHandler.sendPacket(new Packet20NamedEntitySpawn(((CraftPlayer) pInvis).getHandle()));
     }
 
-    public double getDistance (Location loc1, Location loc2) {
+    public static double getDistance (Location loc1, Location loc2) {
         double distX = Math.pow(loc1.getBlockX() - loc2.getBlockX(), 2);
         double distY = Math.pow(loc1.getBlockY() - loc2.getBlockY(), 2);
         

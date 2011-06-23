@@ -20,7 +20,7 @@ import org.bukkit.util.config.Configuration;
 public class Administrate extends JavaPlugin {
     protected static final Logger log = Logger.getLogger("Minecraft");
     private AdminPlayerListener playerListener = new AdminPlayerListener(this);
-    private AdminEntityListener entityListener = new AdminEntityListener(this);
+    private AdminEntityListener entityListener = new AdminEntityListener();
     public AdminHandler adminHandler;
     public CommandExecutor cmdExec;
 

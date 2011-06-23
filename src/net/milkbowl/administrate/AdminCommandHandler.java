@@ -23,10 +23,9 @@ public class AdminCommandHandler implements CommandExecutor {
     private static Administrate plugin;
     private AdminHandler admins;
     
-    @SuppressWarnings("static-access")
     AdminCommandHandler(Administrate plugin) {
-        this.plugin = plugin;
-        admins = new AdminHandler(this.plugin);
+        AdminCommandHandler.plugin = plugin;
+        admins = plugin.getAdminHandler();
     }
 
 
@@ -73,13 +72,13 @@ public class AdminCommandHandler implements CommandExecutor {
         if (AdminPermissions.has(player, AdminPermissions.adminModePerm) || AdminPermissions.has(player, AdminPermissions.godPerm) || AdminPermissions.has(player, AdminPermissions.returnPerm) || AdminPermissions.has(player, AdminPermissions.stealthPerm) || AdminPermissions.has(player, AdminPermissions.vanishPerm)) {
             if (args.length < 1) {
                 //send string of info for this player;
-                player.sendMessage(admins.infoString(player.getName()));
+                player.sendMessage(AdminHandler.infoString(player.getName()));
             } else if (AdminPermissions.has(player, AdminPermissions.status)) {
                 for (Player pStatus : plugin.getServer().getOnlinePlayers()) {
                     if (pStatus.getName().equalsIgnoreCase(args[0])){
                         //Send infostring for this player
-                        player.sendMessage(admins.infoString(pStatus.getName()));
-                        player.sendMessage(pStatus.getName() + " is currently saved to: " + admins.getLocationString(pStatus.getName()));
+                        player.sendMessage(AdminHandler.infoString(pStatus.getName()));
+                        player.sendMessage(pStatus.getName() + " is currently saved to: " + AdminHandler.getLocationString(pStatus.getName()));
                     } else {
                         player.sendMessage("Could not find a player named " + args[0]);
                     }
@@ -113,11 +112,11 @@ public class AdminCommandHandler implements CommandExecutor {
     public void saveLoc (Player player) {
         String playerName = player.getName();
         if (AdminPermissions.has(player, AdminPermissions.returnPerm)) {
-            if (!admins.contains(playerName))
-                admins.add(playerName);
+            if (!AdminHandler.contains(playerName))
+                AdminHandler.add(playerName);
             
-            admins.setOrigin(playerName, player.getLocation());
-            player.sendMessage("You have saved your location at: " + ChatColor.DARK_AQUA + admins.getLocationString(playerName));
+            AdminHandler.setOrigin(playerName, player.getLocation());
+            player.sendMessage("You have saved your location at: " + ChatColor.DARK_AQUA + AdminHandler.getLocationString(playerName));
         } else {
             //If they don't have permissions let them know
             AdminPermissions.noPermsMessage(player);
@@ -134,21 +133,21 @@ public class AdminCommandHandler implements CommandExecutor {
         String playerName = player.getName();
         if (AdminPermissions.has(player, AdminPermissions.adminModePerm)) {
             //If this player is already in admin-mode - toggle it off.
-            if(admins.isAdminMode(playerName)) {
-                admins.setAdminMode(playerName, false);
+            if(AdminHandler.isAdminMode(playerName)) {
+                AdminHandler.setAdminMode(playerName, false);
                 player.sendMessage(ChatColor.RED + "Admin-Mode " + ChatColor.WHITE + "is now " + ChatColor.RED + "disabled.");
                 //Return the player a half-second later
                 admins.returnPlayer(player);
             } else {
                 //Check if this player is in the admin map - add if necessary
-                if (!admins.contains(playerName))
-                    admins.add(playerName);
+                if (!AdminHandler.contains(playerName))
+                    AdminHandler.add(playerName);
                 //Enable adminmode and send the message
-                admins.setAdminMode(playerName, true);
+                AdminHandler.setAdminMode(playerName, true);
                 player.sendMessage(ChatColor.GREEN + "Admin-Mode " + ChatColor.WHITE + "is now " + ChatColor.GREEN + "enabled.");
                 //Save the players current location as their origin.
-                admins.setOrigin(playerName, player.getLocation());
-                player.sendMessage("You have saved your location at: " + ChatColor.BLUE + admins.getLocationString(playerName));
+                AdminHandler.setOrigin(playerName, player.getLocation());
+                player.sendMessage("You have saved your location at: " + ChatColor.BLUE + AdminHandler.getLocationString(playerName));
             }
         } else {
             //If they don't have permissions let them know
@@ -165,18 +164,18 @@ public class AdminCommandHandler implements CommandExecutor {
         String playerName = player.getName();
         if (AdminPermissions.has(player, AdminPermissions.godPerm)) {
             //If this player is already in god-mode - toggle it off.
-            if(admins.isGod(playerName)) {
-                admins.setGod(playerName, false);
+            if(AdminHandler.isGod(playerName)) {
+                AdminHandler.setGod(playerName, false);
                 player.sendMessage(ChatColor.RED + "God-Mode " + ChatColor.WHITE + "is now " + ChatColor.RED + "disabled.");
             } else {
                 //Check if this player is in the admin map - add if necessary
-                if (!admins.contains(playerName)) {
-                    admins.add(playerName);
+                if (!AdminHandler.contains(playerName)) {
+                    AdminHandler.add(playerName);
                     log.info("Added player to admin mapping");
                 }
 
                 //Now enable it and send the message
-                admins.setGod(playerName, true);
+                AdminHandler.setGod(playerName, true);
                 player.sendMessage(ChatColor.GREEN + "God-Mode " + ChatColor.WHITE + "is now " + ChatColor.GREEN + "enabled.");
             }
         } else {
@@ -196,15 +195,15 @@ public class AdminCommandHandler implements CommandExecutor {
         //Check permissions to use the command
         if (AdminPermissions.has(player, AdminPermissions.stealthPerm)) {
             //If the player is already stealthed, disable and send them a message
-            if (admins.isStealthed(playerName)) {
-                admins.setStealthed(playerName, false);
+            if (AdminHandler.isStealthed(playerName)) {
+                AdminHandler.setStealthed(playerName, false);
                 player.sendMessage(ChatColor.RED + "Stealth-Mode " + ChatColor.WHITE + "is now " + ChatColor.RED + "disabled.");
             } else {
                 //Check if this player is in the admin map - add if necessary
-                if (!admins.contains(playerName))
-                    admins.add(playerName);
+                if (!AdminHandler.contains(playerName))
+                    AdminHandler.add(playerName);
                 //Now enable stealth mode and send the message
-                admins.setStealthed(playerName, true);
+                AdminHandler.setStealthed(playerName, true);
                 player.sendMessage(ChatColor.GREEN + "Stealth-Mode " + ChatColor.WHITE + "is now " + ChatColor.GREEN + "enabled.");
             }
         } else {
@@ -224,18 +223,18 @@ public class AdminCommandHandler implements CommandExecutor {
         //Check permissions to use the command
         if (AdminPermissions.has(player, AdminPermissions.vanishPerm)) {
             //If the player is already vanished - unvanish them.
-            if (admins.isInvisible(playerName)) {
-                admins.setInvis(playerName, false);
-                admins.setNoPickup(playerName, false);
+            if (AdminHandler.isInvisible(playerName)) {
+                AdminHandler.setInvis(playerName, false);
+                AdminHandler.setNoPickup(playerName, false);
                 admins.goVisible(player);
                 player.sendMessage(ChatColor.RED + " No-Pickup & Invisibility " + ChatColor.WHITE + "are now " + ChatColor.RED + "disabled.");
             } else {
                 //Check if the player is in the admin map - add if not
-                if (!admins.contains(playerName))
-                    admins.add(playerName);
+                if (!AdminHandler.contains(playerName))
+                    AdminHandler.add(playerName);
                 //Now enable invis, no pickup and send the message
-                admins.setInvis(playerName, true);
-                admins.setNoPickup(playerName, true);
+                AdminHandler.setInvis(playerName, true);
+                AdminHandler.setNoPickup(playerName, true);
                 admins.goInvisible(player);
                 player.sendMessage(ChatColor.GREEN + "No-Pickup & Invisibility " + ChatColor.WHITE + "are now " + ChatColor.GREEN + "enabled.");
             }
