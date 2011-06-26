@@ -9,7 +9,7 @@ commands:
     stealth:
         description: Toggles a player to appear offline
     vanish:
-        aliases: invis
+        aliases: [invis]
         description: turns you invisible and turns on No pickup
     god:
         description: toggles invulnerability
@@ -18,5 +18,5 @@ commands:
     saveloc:
         description: saves your current location
     adminstatus:
-        aliases: as
+        aliases: [as]
         description: shows you what options you have active

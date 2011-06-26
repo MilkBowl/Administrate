@@ -18,59 +18,59 @@ import org.bukkit.util.config.Configuration;
  *
  */
 public class Administrate extends JavaPlugin {
-    protected static final Logger log = Logger.getLogger("Minecraft");
-    private AdminPlayerListener playerListener = new AdminPlayerListener(this);
-    private AdminEntityListener entityListener = new AdminEntityListener();
-    public AdminHandler adminHandler;
-    public CommandExecutor cmdExec;
+	protected static final Logger log = Logger.getLogger("Minecraft");
+	private AdminPlayerListener playerListener = new AdminPlayerListener(this);
+	private AdminEntityListener entityListener = new AdminEntityListener();
+	public AdminHandler adminHandler;
+	public CommandExecutor cmdExec;
 
-    public static String plugName = "[Administrate]";
-    public static final String playerDataPath = "plugins/Administrate/players/";
-    Configuration globalConfig;
-
-
-    public void onDisable() {
-
-    }
-
-    public void onEnable() {
-        //Setup Permissions 
-        AdminPermissions.initialize(getServer());
-
-        //Make our directories.
-        File dir = new File(playerDataPath);
-        dir.mkdirs();
-
-        if (AdminPermissions.isInvalidHandler()) {
-            log.warning(plugName + " - Could not detect a permissions plugin, disabling.");
-            getServer().getPluginManager().disablePlugin(this);
-        }
-
-        //Register our events
-        PluginManager pm = getServer().getPluginManager();
-        pm.registerEvent(Event.Type.PLAYER_JOIN, playerListener, Priority.Highest, this);
-        pm.registerEvent(Event.Type.PLAYER_QUIT, playerListener, Priority.Highest, this);
-        pm.registerEvent(Event.Type.PLAYER_TELEPORT, playerListener, Priority.Highest, this);
-        pm.registerEvent(Event.Type.PLAYER_PICKUP_ITEM, playerListener, Priority.Highest, this);
-        pm.registerEvent(Event.Type.ENTITY_DAMAGE, entityListener, Priority.Highest, this);
-        pm.registerEvent(Event.Type.ENTITY_COMBUST, entityListener, Priority.Highest, this);
-        pm.registerEvent(Event.Type.ENTITY_TARGET, entityListener, Priority.Highest, this);
-
-        adminHandler = new AdminHandler(this);
-        //Register our commands
-        cmdExec = new AdminCommandHandler(this);
-        getCommand("stealth").setExecutor(cmdExec);
-        getCommand("vanish").setExecutor(cmdExec);
-        getCommand("admin").setExecutor(cmdExec);
-        getCommand("god").setExecutor(cmdExec);
-        getCommand("return").setExecutor(cmdExec);
-        getCommand("saveloc").setExecutor(cmdExec);
-        getCommand("adminstatus").setExecutor(cmdExec);
+	public static final String plugName = "[Administrate]";
+	public static final String playerDataPath = "plugins/Administrate/players/";
+	Configuration globalConfig;
 
 
-    }
+	public void onDisable() {
+		log.info(plugName + " - Disabled!");
+	}
 
-    public AdminHandler getAdminHandler() {
-        return adminHandler;
-    }    
+	public void onEnable() {
+		//Setup Permissions 
+		AdminPermissions.initialize(getServer());
+
+		//Make our directories.
+		File dir = new File(playerDataPath);
+		dir.mkdirs();
+
+		if (AdminPermissions.isInvalidHandler()) {
+			log.warning(plugName + " - Could not detect a permissions plugin, disabling.");
+			getServer().getPluginManager().disablePlugin(this);
+		}
+
+		//Register our events
+		PluginManager pm = getServer().getPluginManager();
+		pm.registerEvent(Event.Type.PLAYER_JOIN, playerListener, Priority.Highest, this);
+		pm.registerEvent(Event.Type.PLAYER_QUIT, playerListener, Priority.Highest, this);
+		pm.registerEvent(Event.Type.PLAYER_TELEPORT, playerListener, Priority.Highest, this);
+		pm.registerEvent(Event.Type.PLAYER_PICKUP_ITEM, playerListener, Priority.Highest, this);
+		pm.registerEvent(Event.Type.ENTITY_DAMAGE, entityListener, Priority.Highest, this);
+		pm.registerEvent(Event.Type.ENTITY_COMBUST, entityListener, Priority.Highest, this);
+		pm.registerEvent(Event.Type.ENTITY_TARGET, entityListener, Priority.Highest, this);
+
+		adminHandler = new AdminHandler(this);
+		//Register our commands
+		cmdExec = new AdminCommandHandler(this);
+		getCommand("stealth").setExecutor(cmdExec);
+		getCommand("vanish").setExecutor(cmdExec);
+		getCommand("admin").setExecutor(cmdExec);
+		getCommand("god").setExecutor(cmdExec);
+		getCommand("return").setExecutor(cmdExec);
+		getCommand("saveloc").setExecutor(cmdExec);
+		getCommand("adminstatus").setExecutor(cmdExec);
+
+
+	}
+
+	public AdminHandler getAdminHandler() {
+		return adminHandler;
+	}    
 }
