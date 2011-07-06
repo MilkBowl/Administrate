@@ -9,8 +9,10 @@ import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
+import ru.tehkode.permissions.PermissionManager;
 import ru.tehkode.permissions.bukkit.PermissionsEx;
 
+import com.nijiko.permissions.PermissionHandler;
 import com.nijikokun.bukkit.Permissions.Permissions;
 
 /**
@@ -96,6 +98,33 @@ public class AdminPermissions {
         default:
             return -1;
         }
+    }
+    
+    public static boolean hasAny(Player player) {
+    	switch (handler) {
+    	case PERMISSIONSEX:
+    		PermissionManager pm = PermissionsEx.getPermissionManager();
+    		if (pm.has(player, stealthPerm) || pm.has(player, godPerm) || pm.has(player, returnPerm) || pm.has(player, stealthPerm) || pm.has(player, vanishPerm))
+    			return true;
+    		else
+    			return false;
+    	case PERMISSIONS3:
+    		PermissionHandler ph = ((Permissions) permissionPlugin).getHandler();
+    		if (ph.has(player, stealthPerm) || ph.has(player, godPerm) || ph.has(player, returnPerm) || ph.has(player, stealthPerm) || ph.has(player, vanishPerm))
+    			return true;
+    		else
+    			return false;
+    	case PERMISSIONS:
+    		PermissionHandler pha = ((Permissions) permissionPlugin).getHandler();
+    		if (pha.has(player, stealthPerm) || pha.has(player, godPerm) || pha.has(player, returnPerm) || pha.has(player, stealthPerm) || pha.has(player, vanishPerm))
+    			return true;
+    		else
+    			return false;
+    	case NONE:
+    		return false;
+    	default:
+    		return false;
+    	}
     }
 
     public static boolean has(Player player, String perm) {

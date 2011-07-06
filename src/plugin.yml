@@ -1,6 +1,6 @@
 name: Administrate
 main: net.milkbowl.administrate.Administrate
-version: 1.0.1
+version: 1.0.2
 author: Sleaker
 commands:
     admin:

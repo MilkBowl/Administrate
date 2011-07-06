@@ -66,8 +66,6 @@ public class Administrate extends JavaPlugin {
 		getCommand("return").setExecutor(cmdExec);
 		getCommand("saveloc").setExecutor(cmdExec);
 		getCommand("adminstatus").setExecutor(cmdExec);
-
-
 	}
 
 	public AdminHandler getAdminHandler() {
