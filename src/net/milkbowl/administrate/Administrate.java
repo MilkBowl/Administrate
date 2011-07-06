@@ -36,7 +36,7 @@ public class Administrate extends JavaPlugin {
 	public void onEnable() {
 		//Setup Permissions 
 		AdminPermissions.initialize(getServer());
-
+		
 		//Make our directories.
 		File dir = new File(playerDataPath);
 		dir.mkdirs();

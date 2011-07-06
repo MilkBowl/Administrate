@@ -437,4 +437,23 @@ public final class AdminHandler {
                 goInvisible(player);
         }
     }
+    
+    /**
+     * Sends spoof logout messages to players that don't have seemessage permissions
+     * 
+     * @param string playerName
+     * @param boolean in true/false
+     */
+    public static void fakeLog(String playerName, boolean in) {
+    	for (Player dumby : plugin.getServer().getOnlinePlayers()) {
+    		if (dumby.getName().equals(playerName) || AdminPermissions.has(dumby, AdminPermissions.allMessages)) 
+    			continue;
+    		else {
+    			if (in)
+    				dumby.sendMessage(ChatColor.YELLOW + playerName + " has joined the game.");
+    			else
+    				dumby.sendMessage(ChatColor.YELLOW + playerName + " has left the game.");
+    		}
+    	}
+    }
 }

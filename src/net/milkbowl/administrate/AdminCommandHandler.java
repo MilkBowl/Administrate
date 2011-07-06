@@ -135,6 +135,7 @@ public class AdminCommandHandler implements CommandExecutor {
             //If this player is already in admin-mode - toggle it off.
             if(AdminHandler.isAdminMode(playerName)) {
                 AdminHandler.setAdminMode(playerName, false);
+                AdminHandler.fakeLog(playerName, true);
                 player.sendMessage(ChatColor.RED + "Admin-Mode " + ChatColor.WHITE + "is now " + ChatColor.RED + "disabled.");
                 //Return the player a half-second later
                 admins.returnPlayer(player);
@@ -144,6 +145,7 @@ public class AdminCommandHandler implements CommandExecutor {
                     AdminHandler.add(playerName);
                 //Enable adminmode and send the message
                 AdminHandler.setAdminMode(playerName, true);
+                AdminHandler.fakeLog(playerName, false);
                 player.sendMessage(ChatColor.GREEN + "Admin-Mode " + ChatColor.WHITE + "is now " + ChatColor.GREEN + "enabled.");
                 //Save the players current location as their origin.
                 AdminHandler.setOrigin(playerName, player.getLocation());
@@ -197,13 +199,15 @@ public class AdminCommandHandler implements CommandExecutor {
             //If the player is already stealthed, disable and send them a message
             if (AdminHandler.isStealthed(playerName)) {
                 AdminHandler.setStealthed(playerName, false);
+                AdminHandler.fakeLog(playerName, true);
                 player.sendMessage(ChatColor.RED + "Stealth-Mode " + ChatColor.WHITE + "is now " + ChatColor.RED + "disabled.");
             } else {
                 //Check if this player is in the admin map - add if necessary
                 if (!AdminHandler.contains(playerName))
                     AdminHandler.add(playerName);
-                //Now enable stealth mode and send the message
+                //Now enable stealth mode and send the messages
                 AdminHandler.setStealthed(playerName, true);
+                AdminHandler.fakeLog(playerName, false);
                 player.sendMessage(ChatColor.GREEN + "Stealth-Mode " + ChatColor.WHITE + "is now " + ChatColor.GREEN + "enabled.");
             }
         } else {
@@ -242,5 +246,5 @@ public class AdminCommandHandler implements CommandExecutor {
             //Let the player know they don't have permission
             AdminPermissions.noPermsMessage(player);
         }
-    }    
+    } 
 }
