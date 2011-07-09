@@ -76,7 +76,7 @@ public class AdminCommandHandler implements CommandExecutor {
      */
     public void fakeLogout(Player player) {
     	if (AdminPermissions.has(player, Perms.FAKELOG)) {
-    		AdminHandler.fakeLog(player.getName(), true);
+    		AdminHandler.fakeLog(player.getName(), false);
     	} else {
             AdminPermissions.noPermsMessage(player);
         }
