@@ -12,6 +12,7 @@ commands:
         aliases: [invis]
         description: turns you invisible and turns on No pickup
     god:
+        aliases: [ag, g]
         description: toggles invulnerability
     return:
         description: returns you to your saved location
