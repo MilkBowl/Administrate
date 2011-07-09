@@ -20,16 +20,35 @@ import com.nijikokun.bukkit.Permissions.Permissions;
  *
  */
 public class AdminPermissions {
-    public static final String stealthPerm = "administrate.stealth";
-    public static final String adminModePerm = "administrate.adminmode";
-    public static final String godPerm = "administrate.god";
-    public static final String vanishPerm = "administrate.invisible";
-    public static final String allMessages = "administrate.allmessages";
-    public static final String noAggro = "administrate.noaggro";
-    public static final String returnPerm = "administrate.return";
-    public static final String seeInvis = "administrate.seeinvis";
-    public static final String status = "administrate.status";
-    
+	public static enum Perms {
+		STEALTH(0, "administrate.stealth"),
+		ADMINMODE(1, "administrate.adminmode"),
+		GOD(2, "administrate.god"),
+		VANISH(3, "administrate.invisible"),
+		ALL_MESSAGES(4, "administrate.allmessages"),
+		NO_AGGRO(5, "administrate.noaggro"),
+		RETURN(6, "administrate.return"),
+		SEE_INVIS(7, "administrate.seeinvis"),
+		STATUS(8, "administrate.status"),
+		FAKELOG(9, "administrate.fakelog");
+		
+		int id = -1;
+		String perm = null;
+		
+		Perms(int id, String perm) {
+			this.id = id;
+			this.perm = perm;
+		}
+		
+		public int getId() {
+			return id;
+		}
+
+		public String getPerm() {
+			return perm;
+		}
+	}
+
     public static Logger log = Logger.getLogger("Minecraft");
     private static PermissionsHandler handler;
 
@@ -67,14 +86,14 @@ public class AdminPermissions {
         }
     }
 
-    public static boolean permission(Player player, String permission, boolean defaultPerm) {
+    public static boolean permission(Player player, Perms perm, boolean defaultPerm) {
         switch (handler) {
         case PERMISSIONSEX:
-            return PermissionsEx.getPermissionManager().has(player, permission);
+            return PermissionsEx.getPermissionManager().has(player, perm.getPerm());
         case PERMISSIONS3:
-            return ((Permissions) permissionPlugin).getHandler().has(player, permission);
+            return ((Permissions) permissionPlugin).getHandler().has(player, perm.getPerm());
         case PERMISSIONS:
-            return ((Permissions) permissionPlugin).getHandler().has(player, permission);
+            return ((Permissions) permissionPlugin).getHandler().has(player, perm.getPerm());
         case NONE:
             return defaultPerm;
         default:
@@ -104,19 +123,19 @@ public class AdminPermissions {
     	switch (handler) {
     	case PERMISSIONSEX:
     		PermissionManager pm = PermissionsEx.getPermissionManager();
-    		if (pm.has(player, stealthPerm) || pm.has(player, godPerm) || pm.has(player, returnPerm) || pm.has(player, stealthPerm) || pm.has(player, vanishPerm))
+    		if (pm.has(player, Perms.STEALTH.getPerm()) || pm.has(player, Perms.GOD.getPerm()) || pm.has(player, Perms.RETURN.getPerm()) || pm.has(player, Perms.STEALTH.getPerm()) || pm.has(player, Perms.VANISH.getPerm()))
     			return true;
     		else
     			return false;
     	case PERMISSIONS3:
     		PermissionHandler ph = ((Permissions) permissionPlugin).getHandler();
-    		if (ph.has(player, stealthPerm) || ph.has(player, godPerm) || ph.has(player, returnPerm) || ph.has(player, stealthPerm) || ph.has(player, vanishPerm))
+    		if (ph.has(player, Perms.STEALTH.getPerm()) || ph.has(player, Perms.GOD.getPerm()) || ph.has(player, Perms.RETURN.getPerm()) || ph.has(player, Perms.STEALTH.getPerm()) || ph.has(player, Perms.VANISH.getPerm()))
     			return true;
     		else
     			return false;
     	case PERMISSIONS:
     		PermissionHandler pha = ((Permissions) permissionPlugin).getHandler();
-    		if (pha.has(player, stealthPerm) || pha.has(player, godPerm) || pha.has(player, returnPerm) || pha.has(player, stealthPerm) || pha.has(player, vanishPerm))
+    		if (pha.has(player, Perms.STEALTH.getPerm()) || pha.has(player, Perms.GOD.getPerm()) || pha.has(player, Perms.RETURN.getPerm()) || pha.has(player, Perms.STEALTH.getPerm()) || pha.has(player, Perms.VANISH.getPerm()))
     			return true;
     		else
     			return false;
@@ -127,14 +146,14 @@ public class AdminPermissions {
     	}
     }
 
-    public static boolean has(Player player, String perm) {
+    public static boolean has(Player player, Perms perm) {
         switch (handler) {
         case PERMISSIONSEX:
-            return PermissionsEx.getPermissionManager().has(player, perm);
+            return PermissionsEx.getPermissionManager().has(player, perm.getPerm());
         case PERMISSIONS3:
-            return ((Permissions) permissionPlugin).getHandler().has(player, perm);
+            return ((Permissions) permissionPlugin).getHandler().has(player, perm.getPerm());
         case PERMISSIONS:
-            return ((Permissions) permissionPlugin).getHandler().has(player, perm);
+            return ((Permissions) permissionPlugin).getHandler().has(player, perm.getPerm());
         case NONE:
             return false;
         default:

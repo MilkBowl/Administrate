@@ -3,6 +3,8 @@
  */
 package net.milkbowl.administrate;
 
+import net.milkbowl.administrate.AdminPermissions.Perms;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -51,7 +53,7 @@ public class AdminPlayerListener extends PlayerListener {
 					message += ChatColor.GREEN + " StealthLog ";
 					//Check each player online for permission to receive the login message
 					for (Player p : plugin.getServer().getOnlinePlayers()) 
-						if (AdminPermissions.has(p, AdminPermissions.allMessages)) 
+						if (AdminPermissions.has(p, Perms.ALL_MESSAGES)) 
 							p.sendMessage(ChatColor.GREEN + playerName + ChatColor.WHITE + " has logged in stealthily.");
 				} else
 					message += ChatColor.RED + " StealthLog ";
@@ -86,7 +88,7 @@ public class AdminPlayerListener extends PlayerListener {
 				event.setQuitMessage(null);
 				//Check each player online for permission to receive the logout message.
 				for (Player p : plugin.getServer().getOnlinePlayers())
-					if (AdminPermissions.has(p, AdminPermissions.allMessages))
+					if (AdminPermissions.has(p, Perms.ALL_MESSAGES))
 						p.sendMessage(ChatColor.GREEN + playerName + ChatColor.WHITE + " has logged out stealthily");
 			}
 		}
@@ -102,7 +104,7 @@ public class AdminPlayerListener extends PlayerListener {
 			plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new AfterTeleInvis(player, event.getTo(), false), 10);
 			return;
 		} else {
-			//For Invisible players lets teleport them to a special location first if they are a long ways away or on a difference world
+			//For Invisible players lets teleport them to a special location first if they are a long ways away or on a different world
 			if (!event.getFrom().getWorld().equals(event.getTo().getWorld()) || AdminHandler.getDistance(event.getFrom(), event.getTo()) > 80)
 			{
 				Location toLoc = event.getTo();
@@ -110,7 +112,7 @@ public class AdminPlayerListener extends PlayerListener {
 				event.setTo(new Location(toLoc.getWorld(), toLoc.getX(), 127, toLoc.getZ()));
 
 				//Make the player invulnerable for 20 ticks - just in case they teleport into walls
-				player.setNoDamageTicks(20);
+				player.setNoDamageTicks(40);
 				//Create the actual location we want to send the player to in this teleport.
 				plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new AfterTeleInvis(player, toLoc, true), 10);
 

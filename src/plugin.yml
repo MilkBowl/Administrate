@@ -6,18 +6,33 @@ commands:
     admin:
         aliases: [at, adminmode]
         description: Toggles administration mode
+        usage: /<command>
     stealth:
         description: Toggles a player to appear offline
+        usage: /<command>
     vanish:
         aliases: [invis]
         description: turns you invisible and turns on No pickup
+        usage: /<command>
     god:
         aliases: [ag, g]
         description: toggles invulnerability
+        usage: /<command>
     return:
         description: returns you to your saved location
+        usage: /<command>
     saveloc:
         description: saves your current location
+        usage: /<command>
     adminstatus:
         aliases: [as]
         description: shows you what options you have active
+        usage: /<command>
+    fakeout:
+        aliases: [fo, fakelogout]
+        description: Send a spoofed logout message to all online players.
+        usage: /<command>
+    fakein:
+        aliases: [fi, fakelogin]
+        description: Send a spoofed login message to all online players.
+        usage: /<command>

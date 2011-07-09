@@ -6,6 +6,8 @@ package net.milkbowl.administrate;
 
 import java.util.logging.Logger;
 
+import net.milkbowl.administrate.AdminPermissions.Perms;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -57,9 +59,39 @@ public class AdminCommandHandler implements CommandExecutor {
             } else if (command.getName().equals("adminstatus")) {
                 adminStatus(player, args);
                 return true;
+            } else if (command.getName().equals("fakeout")) {
+            	fakeLogout(player);
+            	return true;
+            } else if (command.getName().equals("fakein")) {
+            	fakeLogin(player);
+            	return true;
             }
         }
         return false;
+    }
+    
+    /**
+     * Sends a fake logout message to all players connected that do not have all-messages permission
+     * 
+     */
+    public void fakeLogout(Player player) {
+    	if (AdminPermissions.has(player, Perms.FAKELOG)) {
+    		AdminHandler.fakeLog(player.getName(), true);
+    	} else {
+            AdminPermissions.noPermsMessage(player);
+        }
+    }
+    
+    /**
+     * Sends a fake login message to all players connected that do not have all-messages permission
+     * 
+     */
+    public void fakeLogin(Player player) {
+    	if (AdminPermissions.has(player, Perms.FAKELOG)) {
+    		AdminHandler.fakeLog(player.getName(), true);
+    	} else {
+            AdminPermissions.noPermsMessage(player);
+        }
     }
     
     /**
@@ -69,11 +101,11 @@ public class AdminCommandHandler implements CommandExecutor {
      * @param args
      */
     public void adminStatus (Player player, String[] args) {
-        if (AdminPermissions.has(player, AdminPermissions.adminModePerm) || AdminPermissions.has(player, AdminPermissions.godPerm) || AdminPermissions.has(player, AdminPermissions.returnPerm) || AdminPermissions.has(player, AdminPermissions.stealthPerm) || AdminPermissions.has(player, AdminPermissions.vanishPerm)) {
+        if (AdminPermissions.hasAny(player)) {
             if (args.length < 1) {
                 //send string of info for this player;
                 player.sendMessage(AdminHandler.infoString(player.getName()));
-            } else if (AdminPermissions.has(player, AdminPermissions.status)) {
+            } else if (AdminPermissions.has(player, Perms.STATUS)) {
                 for (Player pStatus : plugin.getServer().getOnlinePlayers()) {
                     if (pStatus.getName().equalsIgnoreCase(args[0])){
                         //Send infostring for this player
@@ -94,7 +126,7 @@ public class AdminCommandHandler implements CommandExecutor {
      * then attempts to return the player to a saved location
      */
     public void returnLoc (Player player) {
-        if (AdminPermissions.has(player, AdminPermissions.returnPerm)) {
+        if (AdminPermissions.has(player, Perms.RETURN)) {
             if (!admins.returnPlayer(player)) 
                 player.sendMessage("You don't have a location saved to return to!");
         } else {
@@ -111,7 +143,7 @@ public class AdminCommandHandler implements CommandExecutor {
      */
     public void saveLoc (Player player) {
         String playerName = player.getName();
-        if (AdminPermissions.has(player, AdminPermissions.returnPerm)) {
+        if (AdminPermissions.has(player, Perms.RETURN)) {
             if (!AdminHandler.contains(playerName))
                 AdminHandler.add(playerName);
             
@@ -131,7 +163,7 @@ public class AdminCommandHandler implements CommandExecutor {
      */
     public void adminMode (Player player) {
         String playerName = player.getName();
-        if (AdminPermissions.has(player, AdminPermissions.adminModePerm)) {
+        if (AdminPermissions.has(player, Perms.ADMINMODE)) {
             //If this player is already in admin-mode - toggle it off.
             if(AdminHandler.isAdminMode(playerName)) {
                 AdminHandler.setAdminMode(playerName, false);
@@ -164,7 +196,7 @@ public class AdminCommandHandler implements CommandExecutor {
      */
     public void godMode (Player player) {
         String playerName = player.getName();
-        if (AdminPermissions.has(player, AdminPermissions.godPerm)) {
+        if (AdminPermissions.has(player, Perms.GOD)) {
             //If this player is already in god-mode - toggle it off.
             if(AdminHandler.isGod(playerName)) {
                 AdminHandler.setGod(playerName, false);
@@ -195,7 +227,7 @@ public class AdminCommandHandler implements CommandExecutor {
     public void stealth (Player player) {
         String playerName = player.getName();
         //Check permissions to use the command
-        if (AdminPermissions.has(player, AdminPermissions.stealthPerm)) {
+        if (AdminPermissions.has(player, Perms.STEALTH)) {
             //If the player is already stealthed, disable and send them a message
             if (AdminHandler.isStealthed(playerName)) {
                 AdminHandler.setStealthed(playerName, false);
@@ -225,7 +257,7 @@ public class AdminCommandHandler implements CommandExecutor {
     public void vanish (Player player) {
         String playerName = player.getName();
         //Check permissions to use the command
-        if (AdminPermissions.has(player, AdminPermissions.vanishPerm)) {
+        if (AdminPermissions.has(player, Perms.VANISH)) {
             //If the player is already vanished - unvanish them.
             if (AdminHandler.isInvisible(playerName)) {
                 AdminHandler.setInvis(playerName, false);

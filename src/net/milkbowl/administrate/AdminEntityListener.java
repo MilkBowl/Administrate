@@ -3,6 +3,8 @@
  */
 package net.milkbowl.administrate;
 
+import net.milkbowl.administrate.AdminPermissions.Perms;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityCombustEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -24,7 +26,7 @@ public class AdminEntityListener extends EntityListener {
         
         if (event.getEntity() instanceof Player) {
             String playerName = ((Player) event.getEntity()).getName();
-            if( (AdminHandler.isGod(playerName) || AdminHandler.isInvisible(playerName)) && AdminPermissions.has((Player) event.getEntity(), AdminPermissions.noAggro))
+            if( (AdminHandler.isGod(playerName) || AdminHandler.isInvisible(playerName)) && AdminPermissions.has((Player) event.getEntity(), Perms.NO_AGGRO))
                 event.setCancelled(true);
         }
     }
