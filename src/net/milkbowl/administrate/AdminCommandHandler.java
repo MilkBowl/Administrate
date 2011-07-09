@@ -104,12 +104,12 @@ public class AdminCommandHandler implements CommandExecutor {
         if (AdminPermissions.hasAny(player)) {
             if (args.length < 1) {
                 //send string of info for this player;
-                player.sendMessage(AdminHandler.infoString(player.getName()));
+                player.sendMessage(AdminHandler.infoString(player));
             } else if (AdminPermissions.has(player, Perms.STATUS)) {
                 for (Player pStatus : plugin.getServer().getOnlinePlayers()) {
                     if (pStatus.getName().equalsIgnoreCase(args[0])){
                         //Send infostring for this player
-                        player.sendMessage(AdminHandler.infoString(pStatus.getName()));
+                        player.sendMessage(AdminHandler.infoString(pStatus));
                         player.sendMessage(pStatus.getName() + " is currently saved to: " + AdminHandler.getLocationString(pStatus.getName()));
                     } else {
                         player.sendMessage("Could not find a player named " + args[0]);

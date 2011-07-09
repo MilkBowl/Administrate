@@ -55,14 +55,18 @@ public class AdminPlayerListener extends PlayerListener {
 					for (Player p : plugin.getServer().getOnlinePlayers()) 
 						if (AdminPermissions.has(p, Perms.ALL_MESSAGES)) 
 							p.sendMessage(ChatColor.GREEN + playerName + ChatColor.WHITE + " has logged in stealthily.");
-				} else
+				} else if (AdminPermissions.has(player, Perms.STEALTH))
 					message += ChatColor.RED + " StealthLog ";
 
 				//Colorize our Settings for output
-				message += AdminHandler.colorize(AdminHandler.isInvisible(playerName)) + " Invisible ";
-				message += AdminHandler.colorize(AdminHandler.isNoPickup(playerName)) + " NoPickup ";
-				message += AdminHandler.colorize(AdminHandler.isGod(playerName)) + " GodMode ";
-				message += AdminHandler.colorize(AdminHandler.isAdminMode(playerName)) + " AdminMode ";
+				if (AdminPermissions.has(player, Perms.VANISH)) {
+					message += AdminHandler.colorize(AdminHandler.isInvisible(playerName)) + " Invisible ";
+					message += AdminHandler.colorize(AdminHandler.isNoPickup(playerName)) + " NoPickup ";
+				}
+				if (AdminPermissions.has(player, Perms.GOD))
+					message += AdminHandler.colorize(AdminHandler.isGod(playerName)) + " GodMode ";
+				if (AdminPermissions.has(player, Perms.ADMINMODE))
+					message += AdminHandler.colorize(AdminHandler.isAdminMode(playerName)) + " AdminMode ";
 
 				//Send the player a delayed message of what options they have selected
 				plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new DelayedMessage(player, message), 10);

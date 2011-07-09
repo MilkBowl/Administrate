@@ -27,17 +27,23 @@ public final class AdminHandler {
 		AdminHandler.plugin = plugin;
 	}
 
-	public static String infoString(String playerName) {
+	public static String infoString(Player player) {
+		String playerName = player.getName();
 		if (!admins.containsKey(playerName))
 			return "That player is not an admin, or has no modes currently active.";
 		else {
 			String message = playerName + " has the following options: ";
 			//Colorize our Settings for output
-			message += colorize(isStealthed(playerName)) + " StealthMode ";
-			message += colorize(isInvisible(playerName)) + " Invisible ";
-			message += colorize(isNoPickup(playerName)) + " NoPickup ";
-			message += colorize(isGod(playerName)) + " GodMode ";
-			message += colorize(isAdminMode(playerName)) + " AdminMode ";
+			if (AdminPermissions.has(player, Perms.STEALTH))
+				message += colorize(isStealthed(playerName)) + " StealthMode ";
+			if (AdminPermissions.has(player, Perms.VANISH)) {
+				message += colorize(isInvisible(playerName)) + " Invisible ";
+				message += colorize(isNoPickup(playerName)) + " NoPickup ";
+			}
+			if (AdminPermissions.has(player, Perms.GOD))
+				message += colorize(isGod(playerName)) + " GodMode ";
+			if (AdminPermissions.has(player, Perms.ADMINMODE))
+				message += colorize(isAdminMode(playerName)) + " AdminMode ";
 			return message;
 		}
 	}
