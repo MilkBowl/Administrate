@@ -148,6 +148,7 @@ public class AdminCommandHandler implements CommandExecutor {
                 AdminHandler.add(playerName);
             
             AdminHandler.setOrigin(playerName, player.getLocation());
+            AdminHandler.savePlayer(playerName);
             player.sendMessage("You have saved your location at: " + ChatColor.DARK_AQUA + AdminHandler.getLocationString(playerName));
         } else {
             //If they don't have permissions let them know
@@ -183,6 +184,7 @@ public class AdminCommandHandler implements CommandExecutor {
                 AdminHandler.setOrigin(playerName, player.getLocation());
                 player.sendMessage("You have saved your location at: " + ChatColor.BLUE + AdminHandler.getLocationString(playerName));
             }
+            AdminHandler.savePlayer(playerName);
         } else {
             //If they don't have permissions let them know
             AdminPermissions.noPermsMessage(player);
@@ -212,6 +214,7 @@ public class AdminCommandHandler implements CommandExecutor {
                 AdminHandler.setGod(playerName, true);
                 player.sendMessage(ChatColor.GREEN + "God-Mode " + ChatColor.WHITE + "is now " + ChatColor.GREEN + "enabled.");
             }
+            AdminHandler.savePlayer(playerName);
         } else {
             //If they don't have permissions let them know
             AdminPermissions.noPermsMessage(player);
@@ -242,6 +245,7 @@ public class AdminCommandHandler implements CommandExecutor {
                 AdminHandler.fakeLog(playerName, false);
                 player.sendMessage(ChatColor.GREEN + "Stealth-Mode " + ChatColor.WHITE + "is now " + ChatColor.GREEN + "enabled.");
             }
+            AdminHandler.savePlayer(playerName);
         } else {
             //If they don't have permissions let them know
             AdminPermissions.noPermsMessage(player);
@@ -274,6 +278,7 @@ public class AdminCommandHandler implements CommandExecutor {
                 admins.goInvisible(player);
                 player.sendMessage(ChatColor.GREEN + "No-Pickup & Invisibility " + ChatColor.WHITE + "are now " + ChatColor.GREEN + "enabled.");
             }
+            AdminHandler.savePlayer(playerName);
         } else {
             //Let the player know they don't have permission
             AdminPermissions.noPermsMessage(player);
