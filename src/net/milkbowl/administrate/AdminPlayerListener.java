@@ -109,7 +109,7 @@ public class AdminPlayerListener extends PlayerListener {
 			return;
 		} else {
 			//For Invisible players lets teleport them to a special location first if they are a long ways away or on a different world
-			if (!event.getFrom().getWorld().equals(event.getTo().getWorld()) || AdminHandler.getDistance(event.getFrom(), event.getTo()) > 80)
+			if (!event.getFrom().getWorld().equals(event.getTo().getWorld()) || AdminHandler.getDistance(event.getFrom(), event.getTo()) > 50)
 			{
 				Location toLoc = event.getTo();
 				//Instead send them to the top of the world in the same chunk

@@ -169,6 +169,7 @@ public class AdminCommandHandler implements CommandExecutor {
             if(AdminHandler.isAdminMode(playerName)) {
                 AdminHandler.setAdminMode(playerName, false);
                 AdminHandler.fakeLog(playerName, true);
+                admins.goVisible(player);
                 player.sendMessage(ChatColor.RED + "Admin-Mode " + ChatColor.WHITE + "is now " + ChatColor.RED + "disabled.");
                 //Return the player a half-second later
                 admins.returnPlayer(player);
@@ -179,6 +180,7 @@ public class AdminCommandHandler implements CommandExecutor {
                 //Enable adminmode and send the message
                 AdminHandler.setAdminMode(playerName, true);
                 AdminHandler.fakeLog(playerName, false);
+                admins.goInvisible(player);
                 player.sendMessage(ChatColor.GREEN + "Admin-Mode " + ChatColor.WHITE + "is now " + ChatColor.GREEN + "enabled.");
                 //Save the players current location as their origin.
                 AdminHandler.setOrigin(playerName, player.getLocation());
