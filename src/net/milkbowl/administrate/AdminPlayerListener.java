@@ -3,6 +3,9 @@
  */
 package net.milkbowl.administrate;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import net.milkbowl.administrate.AdminPermissions.Perms;
 
 import org.bukkit.ChatColor;
@@ -28,6 +31,7 @@ public class AdminPlayerListener extends PlayerListener {
 	}
 
 	private AdminHandler admins = new AdminHandler(plugin);
+	private Set<String> teleports = new HashSet<String>();
 
 	public void onPlayerRespawn(PlayerRespawnEvent event) {
 		Player player = event.getPlayer();
@@ -107,10 +111,10 @@ public class AdminPlayerListener extends PlayerListener {
 			//For non-invis players just update their sight 10 ticks later.
 			plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new AfterTeleInvis(player, event.getTo(), false), 10);
 			return;
-		} else {
-			//For Invisible players lets teleport them to a special location first if they are a long ways away or on a different world
-			if (!event.getFrom().getWorld().equals(event.getTo().getWorld()) || AdminHandler.getDistance(event.getFrom(), event.getTo()) > 50)
-			{
+		} else if (!event.getFrom().getWorld().equals(event.getTo().getWorld()) || AdminHandler.getDistance(event.getFrom(), event.getTo()) > 50) {
+			if (!teleports.contains(player.getName())) {
+				teleports.add(player.getName());
+				//For Invisible players lets teleport them to a special location first if they are a long ways away or on a different world
 				Location toLoc = event.getTo();
 				//Instead send them to the top of the world in the same chunk
 				event.setTo(new Location(toLoc.getWorld(), toLoc.getX(), 127, toLoc.getZ()));
@@ -119,13 +123,16 @@ public class AdminPlayerListener extends PlayerListener {
 				player.setNoDamageTicks(40);
 				//Create the actual location we want to send the player to in this teleport.
 				plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new AfterTeleInvis(player, toLoc, true), 10);
-
-			} else {
-				//update this players view
-				plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new AfterTeleInvis(player, event.getTo(), false), 10);
 				return;
+			} else {
+				teleports.remove(player.getName());
 			}
-		}
+		} 
+		//update this players view
+		plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new AfterTeleInvis(player, event.getTo(), false), 10);
+		return;
+
+
 	}
 
 	public void onPlayerPickupItem (PlayerPickupItemEvent event) {
