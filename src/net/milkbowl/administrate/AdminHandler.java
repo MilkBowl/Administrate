@@ -341,6 +341,8 @@ public final class AdminHandler {
 
 		for (Player pDummy : plugin.getServer().getOnlinePlayers())
 			invisible(player, pDummy);
+		
+		plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new UpdateInvisibilityTask(player), 10);
 	}
 
 	/**
@@ -384,6 +386,7 @@ public final class AdminHandler {
 
 		//Send the packet to destroy the entity object
 		((CraftPlayer) pDummy).getHandle().netServerHandler.sendPacket(new Packet29DestroyEntity(((CraftPlayer) pInvis).getEntityId())); 
+		
 	}
 
 	/**

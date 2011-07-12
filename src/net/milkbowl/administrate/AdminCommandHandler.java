@@ -155,6 +155,7 @@ public class AdminCommandHandler implements CommandExecutor {
             AdminPermissions.noPermsMessage(player);
         }
     }
+    
     /**
      * Toggles admin-mode for a player
      * God, NoPickup, Stealth, Invis + Saves Location or
