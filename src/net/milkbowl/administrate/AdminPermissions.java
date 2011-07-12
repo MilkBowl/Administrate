@@ -104,12 +104,13 @@ public class AdminPermissions {
     /*
      * Return an info double
      */
-    public static double infoDouble(Player player, String nodeName) {
+    @SuppressWarnings("deprecation")
+	public static double infoDouble(Player player, String nodeName) {
         switch (handler) {
         case PERMISSIONSEX:
             return PermissionsEx.getPermissionManager().getUser(player.getName()).getOptionDouble(nodeName, player.getWorld().getName(), -1);
         case PERMISSIONS3:
-            return ((Permissions) permissionPlugin).getHandler().getPermissionDouble(player.getWorld().getName(), player.getName(), nodeName);
+            return ((Permissions) permissionPlugin).getHandler().getInfoDouble(player.getWorld().getName(), player.getName(), nodeName, false);
         case PERMISSIONS:
             return ((Permissions) permissionPlugin).getHandler().getPermissionDouble(player.getWorld().getName(), player.getName(), nodeName);
         case NONE:

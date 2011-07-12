@@ -253,6 +253,26 @@ public final class AdminHandler {
 		else
 			return false;
 	}
+	
+	/**
+	 * Takes in a playerName to check if stealthed, and the Player that is attempting to see playerName
+	 * If the Player has permission to see all messages the method returns false - allowing playerName 
+	 * to be seen in a list.  Use this for hooking from other plugins that don't have their own admin 
+	 * permission system.
+	 * 
+	 * @param playerName
+	 * @param player 
+	 * @return true if the player is currently in stealth mode and Player does not have permission to see everyone
+	 */
+	public static boolean isStealthed (String playerName, Player player) {
+		if (AdminPermissions.has(player, Perms.ALL_MESSAGES))
+			return false;
+		else if (contains(playerName)) {
+			return admins.get(playerName).isStealthed();
+		}
+		else
+			return false;
+	}
 
 	public static String getLocationString (String playerName) {
 		if (contains(playerName))
@@ -400,7 +420,6 @@ public final class AdminHandler {
 			if (isInvisible(pInvis.getName()))
 				invisible(pInvis, pDummy);
 	}
-
 
 	/**
 	 * Handles whether to send the packet to re-create the entity or not on the client
