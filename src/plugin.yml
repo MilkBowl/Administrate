@@ -1,6 +1,6 @@
 name: Administrate
 main: net.milkbowl.administrate.Administrate
-version: 1.1.5
+version: 1.1.6
 author: Sleaker
 commands:
     admin:
@@ -36,4 +36,3 @@ commands:
         aliases: [fi, fakelogin]
         description: Send a spoofed login message to all online players.
         usage: /<command>
-    
