@@ -36,3 +36,4 @@ commands:
         aliases: [fi, fakelogin]
         description: Send a spoofed login message to all online players.
         usage: /<command>
+    

@@ -352,6 +352,21 @@ public final class AdminHandler {
 	}
 
 	/**
+	 * Initial on-command invisibility.  ONLY call this from a command as it initiates a schedule task to go invisible.
+	 * 
+	 */
+	protected void goInvisibleInitial(Player player) {
+		if (player == null || !player.isOnline())
+			return;
+
+		//Run our normal go invisible method
+		goInvisible(player);
+		
+		//Schedule us to remove another entity half a second later (Why is the Client trying to re-add the entity?)
+		plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new UpdateInvisibilityTask(player), 10);
+	}
+	
+	/**
 	 * Makes a player go invisible for all online players
 	 * 
 	 */
@@ -361,8 +376,6 @@ public final class AdminHandler {
 
 		for (Player pDummy : plugin.getServer().getOnlinePlayers())
 			invisible(player, pDummy);
-		
-		plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new UpdateInvisibilityTask(player), 10);
 	}
 
 	/**

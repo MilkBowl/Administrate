@@ -181,7 +181,7 @@ public class AdminCommandHandler implements CommandExecutor {
                 //Enable adminmode and send the message
                 AdminHandler.setAdminMode(playerName, true);
                 AdminHandler.fakeLog(playerName, false);
-                admins.goInvisible(player);
+                admins.goInvisibleInitial(player);
                 player.sendMessage(ChatColor.GREEN + "Admin-Mode " + ChatColor.WHITE + "is now " + ChatColor.GREEN + "enabled.");
                 //Save the players current location as their origin.
                 AdminHandler.setOrigin(playerName, player.getLocation());
@@ -278,7 +278,7 @@ public class AdminCommandHandler implements CommandExecutor {
                 //Now enable invis, no pickup and send the message
                 AdminHandler.setInvis(playerName, true);
                 AdminHandler.setNoPickup(playerName, true);
-                admins.goInvisible(player);
+                admins.goInvisibleInitial(player);
                 player.sendMessage(ChatColor.GREEN + "No-Pickup & Invisibility " + ChatColor.WHITE + "are now " + ChatColor.GREEN + "enabled.");
             }
             AdminHandler.savePlayer(playerName);
