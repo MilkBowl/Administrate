@@ -496,9 +496,9 @@ public final class AdminHandler {
 					dumby.sendMessage(ChatColor.YELLOW + playerName + " has faked a logout.");
 			} else {
 				if (in)
-					dumby.sendMessage(ChatColor.YELLOW + playerName + " has joined the game.");
+					dumby.sendMessage(ChatColor.YELLOW + playerName + " joined the game.");
 				else
-					dumby.sendMessage(ChatColor.YELLOW + playerName + " has left the game.");
+					dumby.sendMessage(ChatColor.YELLOW + playerName + " left the game.");
 			}
 		}
 	}

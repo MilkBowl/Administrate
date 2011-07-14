@@ -58,7 +58,7 @@ public class AdminPlayerListener extends PlayerListener {
 					//Check each player online for permission to receive the login message
 					for (Player p : plugin.getServer().getOnlinePlayers()) 
 						if (AdminPermissions.has(p, Perms.ALL_MESSAGES)) 
-							p.sendMessage(ChatColor.GREEN + playerName + ChatColor.WHITE + " has logged in stealthily.");
+							p.sendMessage(ChatColor.GREEN + playerName + ChatColor.WHITE + " logged in stealthily.");
 				} else if (AdminPermissions.has(player, Perms.STEALTH))
 					message += ChatColor.RED + " StealthLog ";
 
@@ -97,7 +97,7 @@ public class AdminPlayerListener extends PlayerListener {
 				//Check each player online for permission to receive the logout message.
 				for (Player p : plugin.getServer().getOnlinePlayers())
 					if (AdminPermissions.has(p, Perms.ALL_MESSAGES))
-						p.sendMessage(ChatColor.GREEN + playerName + ChatColor.WHITE + " has logged out stealthily");
+						p.sendMessage(ChatColor.GREEN + playerName + ChatColor.WHITE + " logged out stealthily");
 			}
 		}
 	}
