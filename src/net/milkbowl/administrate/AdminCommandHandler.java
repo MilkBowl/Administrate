@@ -11,6 +11,7 @@ import net.milkbowl.administrate.AdminPermissions.Perms;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -212,17 +213,43 @@ public class AdminCommandHandler implements CommandExecutor {
 			player.sendMessage("You must specify at least 1 argument for teleportation");
 			return;
 		}
-		//Assume player if there is only 1 arg.
+		//Assume player or world if there is only 1 arg.
 		if (args.length == 1) {
-
 		} 
 		//Assume teleporting one player to another if 2 args
 		else if (args.length == 2) {
-
+			Player target = null;
+			Player sent = null;
+			World targetWorld = plugin.getServer().getWorld(args[1]);
+			for (Player p : plugin.getServer().getOnlinePlayers()) {
+				if (p.getName().contains(args[1]) && target == null && targetWorld == null)
+					target = p;
+				
+				if (p.getName().contains(args[0]) && (sent == null || (target == sent && target != null))) {
+					sent = p;
+				}
+			}
+			if (sent == null) {
+				player.sendMessage("Could not find a player named " + args[0]);
+			} else if (target == null && targetWorld == null) {
+				player.sendMessage("Could not find that target.");
+			} else if (target == sent) {
+				player.sendMessage("You can not send a player to themselves.");
+			} else if (targetWorld != null){
+				
+			}
 		}
 		//Assume coordinate if 3 args
 		else if (args.length == 3) {
-
+			try {
+				int x = Integer.parseInt(args[0]);
+				int y = Integer.parseInt(args[1]);
+				int z = Integer.parseInt(args[2]);
+				player.teleport(new Location(player.getWorld(), x, y, z));
+			} catch (Exception e) {
+				player.sendMessage("The proper format for coordinate teleporting is /tp x y z");
+			}
+			return;
 		}
 	}
 
