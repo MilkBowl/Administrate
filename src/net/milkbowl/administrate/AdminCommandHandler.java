@@ -219,7 +219,7 @@ public class AdminCommandHandler implements CommandExecutor {
 			Player target = null;
 			World targetWorld = plugin.getServer().getWorld(args[0]);
 			for (Player p : plugin.getServer().getOnlinePlayers()) {
-				if (p.getName().contains(args[1]) && target == null && targetWorld == null) {
+				if (p.getName().contains(args[0]) && target == null && targetWorld == null) {
 					target = p;
 					break;
 				}
