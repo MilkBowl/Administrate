@@ -32,7 +32,9 @@ public class AdminPermissions {
 		STATUS(8, "administrate.status"),
 		FAKELOG(9, "administrate.fakelog"),
 		ADMINTP(10, "administrate.adminmode.tp"),
-		ANYTP(11, "administrate.tp");
+		ANYTP(11, "administrate.tp"),
+		ADMINHEAL(12, "administrate.adminmode.heal"),
+		ANYHEAL(13, "administrate.heal");
 		
 		int id = -1;
 		String perm = null;
