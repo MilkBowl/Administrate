@@ -13,6 +13,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -164,7 +165,7 @@ public class AdminCommandHandler implements CommandExecutor {
 	}
 
 	private void put(Player player, String[] args) {
-		Block block = player.getTargetBlock(null, 50);
+		Block block = player.getTargetBlock(null, 50).getRelative(BlockFace.UP);
 		if (!AdminPermissions.has(player, Perms.ADMINTP) || !AdminPermissions.has(player, Perms.ANYTP)) {
 			player.sendMessage("You don't have permission to use that command");
 			return;
