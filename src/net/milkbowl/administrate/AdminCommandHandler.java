@@ -217,7 +217,7 @@ public class AdminCommandHandler implements CommandExecutor {
 		//Assume player or world if there is only 1 arg.
 		if (args.length == 1) {
 			Player target = null;
-			World targetWorld = plugin.getServer().getWorld(args[1]);
+			World targetWorld = plugin.getServer().getWorld(args[0]);
 			for (Player p : plugin.getServer().getOnlinePlayers()) {
 				if (p.getName().contains(args[1]) && target == null && targetWorld == null) {
 					target = p;
