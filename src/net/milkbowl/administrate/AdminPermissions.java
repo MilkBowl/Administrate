@@ -30,7 +30,9 @@ public class AdminPermissions {
 		RETURN(6, "administrate.return"),
 		SEE_INVIS(7, "administrate.seeinvis"),
 		STATUS(8, "administrate.status"),
-		FAKELOG(9, "administrate.fakelog");
+		FAKELOG(9, "administrate.fakelog"),
+		ADMINTP(10, "administrate.adminmode.tp"),
+		ANYTP(11, "administrate.tp");
 		
 		int id = -1;
 		String perm = null;
