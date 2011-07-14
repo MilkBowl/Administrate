@@ -216,6 +216,21 @@ public class AdminCommandHandler implements CommandExecutor {
 		}
 		//Assume player or world if there is only 1 arg.
 		if (args.length == 1) {
+			Player target = null;
+			World targetWorld = plugin.getServer().getWorld(args[1]);
+			for (Player p : plugin.getServer().getOnlinePlayers()) {
+				if (p.getName().contains(args[1]) && target == null && targetWorld == null) {
+					target = p;
+					break;
+				}
+			}
+			if (targetWorld == null && target == null) {
+				player.sendMessage("Could not find that target");
+			} else if (targetWorld != null) {
+				player.teleport(targetWorld.getSpawnLocation());
+			} else {
+				player.teleport(target.getLocation());
+			}
 		} 
 		//Assume teleporting one player to another if 2 args
 		else if (args.length == 2) {
@@ -226,9 +241,11 @@ public class AdminCommandHandler implements CommandExecutor {
 				if (p.getName().contains(args[1]) && target == null && targetWorld == null)
 					target = p;
 				
-				if (p.getName().contains(args[0]) && (sent == null || (target == sent && target != null))) {
+				if (p.getName().contains(args[0]) && (sent == null || (p != target && target != null))) 
 					sent = p;
-				}
+				
+				if (sent != null && (targetWorld != null || target != null))
+					break;
 			}
 			if (sent == null) {
 				player.sendMessage("Could not find a player named " + args[0]);
@@ -237,7 +254,11 @@ public class AdminCommandHandler implements CommandExecutor {
 			} else if (target == sent) {
 				player.sendMessage("You can not send a player to themselves.");
 			} else if (targetWorld != null){
-				
+				sent.teleport(targetWorld.getSpawnLocation());
+				player.sendMessage("You have teleported " + sent.getName() + " to " + targetWorld.getName());
+			} else {
+				sent.teleport(target.getLocation());
+				player.sendMessage("You have teleported " + sent.getName() + " to " + target.getName());
 			}
 		}
 		//Assume coordinate if 3 args
