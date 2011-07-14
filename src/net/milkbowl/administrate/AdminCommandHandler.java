@@ -3,12 +3,9 @@
  */
 package net.milkbowl.administrate;
 
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
-
-import joptsimple.internal.Strings;
 
 import net.milkbowl.administrate.AdminPermissions.Perms;
 
@@ -114,7 +111,7 @@ public class AdminCommandHandler implements CommandExecutor {
 			}
 		}
 
-		if (players.size() == 0)
+		if (players.isEmpty())
 			player.sendMessage("Could not find any players named " + args[0] + ".");
 		else {
 			String message = "You have healed:";
@@ -182,18 +179,24 @@ public class AdminCommandHandler implements CommandExecutor {
 			teleportAll(player, block.getLocation());
 			player.sendMessage("You have teleported everyone to the target.");
 		} else {
-			boolean match = false;
+			List<String> players = new ArrayList<String>();
 			for (Player p : plugin.getServer().getOnlinePlayers()) {
 				if (p.getName().contains(args[0])) {
-					match = true;
 					p.teleport(block.getLocation());
 					p.sendMessage(player.getName() + " has teleported you.");
-					player.sendMessage("You have brought " + p.getName() + " to the target location.");
+					players.add(p.getName());
 				}
 			}
-			if (!match)
-				player.sendMessage("Could not find any players named " + args[0]);
 
+			if (players.isEmpty())
+				player.sendMessage("Could not find any players named " + args[0]);
+			else {
+				String message = "You have brought to your location:";
+				for (String pName : players) 
+					message += "  " + pName;
+				
+				player.sendMessage(message);
+			}
 			return;
 		}
 	}
