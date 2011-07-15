@@ -26,7 +26,7 @@ public class AdminEntityListener extends EntityListener {
         
         if (event.getTarget() instanceof Player ) {
             String playerName = ((Player) event.getTarget()).getName();
-            if( (AdminHandler.isGod(playerName) || AdminHandler.isInvisible(playerName)) && AdminPermissions.has((Player) event.getEntity(), Perms.NO_AGGRO))
+            if( (AdminHandler.isGod(playerName) || AdminHandler.isInvisible(playerName)) && AdminPermissions.has((Player) event.getTarget(), Perms.NO_AGGRO))
                 event.setCancelled(true);
         }
     }
