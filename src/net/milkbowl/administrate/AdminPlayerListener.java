@@ -198,7 +198,7 @@ public class AdminPlayerListener extends PlayerListener {
 			if (player == null)
 				admins.goAllInvisible();
 			else
-				admins.goInvisible(player);
+				admins.goInvisibleInitial(player);
 		}
 	}
 

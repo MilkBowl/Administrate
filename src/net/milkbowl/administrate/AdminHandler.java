@@ -390,7 +390,7 @@ public final class AdminHandler {
 		for (Player pDummy : plugin.getServer().getOnlinePlayers())
 			visible(player, pDummy);
 	}
-
+	
 	/**
 	 * Checks all players on the server and updates their visibilty
 	 * 
