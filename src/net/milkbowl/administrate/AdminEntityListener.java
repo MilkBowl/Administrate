@@ -23,12 +23,12 @@ public class AdminEntityListener extends EntityListener {
     }
     
     public void onEntityTarget (EntityTargetEvent event) {
-        if (event.isCancelled())
+        if (event.isCancelled() && !(event.getTarget() instanceof Player))
             return;
         
         if (event.getTarget() instanceof Player ) {
-            String playerName = ((Player) event.getTarget()).getName();
-            if( (AdminHandler.isGod(playerName) || AdminHandler.isInvisible(playerName)) && AdminPermissions.has((Player) event.getTarget(), Perms.NO_AGGRO))
+            Player player = ((Player) event.getTarget());
+            if( (AdminHandler.isGod(player.getName()) || AdminHandler.isInvisible(player.getName())) && AdminPermissions.has(player, Perms.NO_AGGRO))
                 event.setCancelled(true);
         }
     }
