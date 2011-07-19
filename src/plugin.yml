@@ -1,6 +1,6 @@
 name: Administrate
 main: net.milkbowl.administrate.Administrate
-version: 1.2.2
+version: 1.2.2-b000
 author: Sleaker
 softdepend: [Permissions, PermissionsEx]
 commands:
