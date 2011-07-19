@@ -39,9 +39,6 @@
         <javac srcdir="." destdir="bin" debug="on" debuglevel="lines,vars,source" classpathref="classpath" />
     	<copy file="src/plugin.yml" tofile="bin/plugin.yml" />
     	<replace file="bin/plugin.yml" token="b000" value="b${env.BUILD_NUMBER}" />
-    	<copy todir="bin/props">
-    		<fileset dir="src/props" />
-    	</copy>
     </target>
   
   <target name="compress" description="Compression target">
