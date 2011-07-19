@@ -26,3 +26,4 @@ Permissions:
 	administrate.seeinvis		- allows a player to see invisible admins
 	administrate.status			- allows a player to get status of another player
 	administrate.heal
+	administrate.tp

@@ -4,12 +4,16 @@
 package net.milkbowl.administrate;
 
 import java.io.File;
+import java.util.Collection;
 import java.util.logging.Logger;
+
+import net.milkbowl.vault.permission.Permission;
 
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.event.Event;
 import org.bukkit.event.Event.Priority;
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.config.Configuration;
 
@@ -24,6 +28,7 @@ public class Administrate extends JavaPlugin {
 	public AdminHandler adminHandler;
 	public CommandExecutor cmdExec;
 
+	public static Permission perms;
 	public static final String plugName = "[Administrate]";
 	public static final String playerDataPath = "plugins/Administrate/players/";
 	Configuration globalConfig;
@@ -35,16 +40,15 @@ public class Administrate extends JavaPlugin {
 
 	public void onEnable() {
 		//Setup Permissions 
-		AdminPermissions.initialize(getServer());
+		if (!setupDependencies()) {
+			log.warning(plugName + " - Could not detect a permissions plugin, disabling.");
+			getServer().getPluginManager().disablePlugin(this);
+			return;
+		}
 		
 		//Make our directories.
 		File dir = new File(playerDataPath);
 		dir.mkdirs();
-
-		if (AdminPermissions.isInvalidHandler()) {
-			log.warning(plugName + " - Could not detect a permissions plugin, disabling.");
-			getServer().getPluginManager().disablePlugin(this);
-		}
 
 		//Register our events
 		PluginManager pm = getServer().getPluginManager();
@@ -74,6 +78,18 @@ public class Administrate extends JavaPlugin {
 		getCommand("admin_heal").setExecutor(cmdExec);
 	}
 
+	private boolean setupDependencies() {
+        Collection<RegisteredServiceProvider<Permission>> perms = this.getServer().getServicesManager().getRegistrations(net.milkbowl.vault.permission.Permission.class);
+        for(RegisteredServiceProvider<Permission> perm : perms) {
+            Permission p = perm.getProvider();
+            log.info(String.format("[%s] Found Service (Permission) %s", getDescription().getName(), p.getName()));
+        }
+        
+        Administrate.perms = this.getServer().getServicesManager().getRegistration(net.milkbowl.vault.permission.Permission.class).getProvider();
+        log.info(String.format("[%s] Using Permission Provider %s", getDescription().getName(), Administrate.perms.getName()));
+        return (Administrate.perms != null);
+	}
+	
 	public AdminHandler getAdminHandler() {
 		return adminHandler;
 	}    
