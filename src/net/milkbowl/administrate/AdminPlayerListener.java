@@ -174,11 +174,11 @@ public class AdminPlayerListener extends PlayerListener {
 				World world = player.getWorld();
 				if (world.getPlayers().contains(player)) {
 					//Set them invisible
-					admins.goInvisible(player);
+					admins.goInvisibleInitial(player);
 					//teleport them to the actual location
-					player.teleport(loc);
-					//remove their fall distance just in case
-					player.setFallDistance(0);
+						player.teleport(loc);
+						//remove their fall distance just in case
+						player.setFallDistance(0);
 				}   
 			} else {
 				admins.updateInvisibles(player);
