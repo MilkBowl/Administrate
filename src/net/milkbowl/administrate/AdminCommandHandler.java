@@ -183,7 +183,7 @@ public class AdminCommandHandler implements CommandExecutor {
 		} else {
 			List<String> players = new ArrayList<String>();
 			for (Player p : plugin.getServer().getOnlinePlayers()) {
-				if (p.getName().contains(args[0])) {
+				if (p.getName().toLowerCase().contains(args[0].toLowerCase())) {
 					p.teleport(block.getLocation());
 					p.sendMessage(player.getName() + " has teleported you.");
 					players.add(p.getName());
@@ -219,7 +219,7 @@ public class AdminCommandHandler implements CommandExecutor {
 			Player target = null;
 			World targetWorld = plugin.getServer().getWorld(args[0]);
 			for (Player p : plugin.getServer().getOnlinePlayers()) {
-				if (p.getName().contains(args[0]) && target == null && targetWorld == null) {
+				if (p.getName().toLowerCase().contains(args[0].toLowerCase()) && target == null && targetWorld == null) {
 					target = p;
 					break;
 				}
@@ -238,10 +238,10 @@ public class AdminCommandHandler implements CommandExecutor {
 			Player sent = null;
 			World targetWorld = plugin.getServer().getWorld(args[1]);
 			for (Player p : plugin.getServer().getOnlinePlayers()) {
-				if (p.getName().contains(args[1]) && target == null && targetWorld == null)
+				if (p.getName().toLowerCase().contains(args[1].toLowerCase()) && target == null && targetWorld == null)
 					target = p;
 				
-				if (p.getName().contains(args[0]) && (sent == null || (p != target && target != null))) 
+				if (p.getName().toLowerCase().contains(args[0].toLowerCase()) && (sent == null || (p != target && target != null))) 
 					sent = p;
 				
 				if (sent != null && (targetWorld != null || target != null))
