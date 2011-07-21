@@ -7,10 +7,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 import net.milkbowl.administrate.AdminPermissions.Perms;
+import net.milkbowl.administrate.runnable.AfterTeleInvis;
+import net.milkbowl.administrate.runnable.ResetVisiblesForPlayer;
+import net.milkbowl.administrate.runnable.UpdateInvisibilityTask;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerListener;
@@ -24,24 +26,23 @@ import org.bukkit.event.player.PlayerTeleportEvent;
  *
  */
 public class AdminPlayerListener extends PlayerListener {
-	private static Administrate plugin;
+	private Administrate plugin;
 
-	AdminPlayerListener(Administrate instance) {
-		plugin = instance;
+	AdminPlayerListener(Administrate plugin) {
+		this.plugin = plugin;
 	}
-
-	private AdminHandler admins = new AdminHandler(plugin);
+	
 	private Set<String> teleports = new HashSet<String>();
 
 	public void onPlayerRespawn(PlayerRespawnEvent event) {
 		Player player = event.getPlayer();
 		String playerName = player.getName();
 		if (AdminHandler.isInvisible(playerName))
-			plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new UpdateInvisibilityTask(player));
+			plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new UpdateInvisibilityTask(player, plugin.adminHandler));
 
 
 		//Makes it so respawning players can't see invisible players
-		plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new ResetVisiblesForPlayer(player));
+		plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new ResetVisiblesForPlayer(player, plugin.adminHandler));
 	}
 
 	public void onPlayerJoin(PlayerJoinEvent event) {
@@ -77,12 +78,12 @@ public class AdminPlayerListener extends PlayerListener {
 
 				//Make the player go invisible if they have the toggle
 				if (AdminHandler.isInvisible(playerName))
-					plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new UpdateInvisibilityTask(player));
+					plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new UpdateInvisibilityTask(player, plugin.adminHandler));
 			} 
 		}
 
 		//Makes it so players can't rejoin the server to see invisible players
-		plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new ResetVisiblesForPlayer(player));
+		plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new ResetVisiblesForPlayer(player, plugin.adminHandler));
 	}
 
 	public void onPlayerQuit(PlayerQuitEvent event) {
@@ -109,7 +110,7 @@ public class AdminPlayerListener extends PlayerListener {
 		Player player = event.getPlayer();
 		if (!AdminHandler.isInvisible(player.getName())) {
 			//For non-invis players just update their sight 10 ticks later.
-			plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new AfterTeleInvis(player, event.getTo(), false), 10);
+			plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new AfterTeleInvis(player, event.getTo(), false, plugin.adminHandler), 10);
 			return;
 		} else if (!event.getFrom().getWorld().equals(event.getTo().getWorld()) || AdminHandler.getDistance(event.getFrom(), event.getTo()) > 50) {
 			if (!teleports.contains(player.getName())) {
@@ -122,14 +123,14 @@ public class AdminPlayerListener extends PlayerListener {
 				//Make the player invulnerable for 20 ticks - just in case they teleport into walls
 				player.setNoDamageTicks(40);
 				//Create the actual location we want to send the player to in this teleport.
-				plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new AfterTeleInvis(player, toLoc, true), 10);
+				plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new AfterTeleInvis(player, toLoc, true, plugin.adminHandler), 10);
 				return;
 			} else {
 				teleports.remove(player.getName());
 			}
 		} 
 		//update this players view
-		plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new AfterTeleInvis(player, event.getTo(), false), 10);
+		plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new AfterTeleInvis(player, event.getTo(), false, plugin.adminHandler), 10);
 		return;
 
 
@@ -157,63 +158,4 @@ public class AdminPlayerListener extends PlayerListener {
 		}
 	}
 
-	private class AfterTeleInvis implements Runnable {
-		private Player player;
-		private Location loc;
-		private boolean isInvis;
-
-		public AfterTeleInvis(Player player, Location loc, boolean val) {
-			this.player = player;
-			this.loc = loc;
-			this.isInvis = val;
-		}
-
-		public void run() {
-			//If this player is invisible lets teleport them to a temporary location before teleporting them to their specified location
-			if (isInvis) {
-				World world = player.getWorld();
-				if (world.getPlayers().contains(player)) {
-					//Set them invisible
-					admins.goInvisibleInitial(player);
-					//teleport them to the actual location
-						player.teleport(loc);
-						//remove their fall distance just in case
-						player.setFallDistance(0);
-				}   
-			} else {
-				admins.updateInvisibles(player);
-			}
-
-		}
-	}
-	private class UpdateInvisibilityTask implements Runnable {
-
-		private Player player;
-
-		UpdateInvisibilityTask(Player player) {
-			this.player = player;
-		}
-
-		public void run() {
-			if (player == null)
-				admins.goAllInvisible();
-			else
-				admins.goInvisibleInitial(player);
-		}
-	}
-
-	private class ResetVisiblesForPlayer implements Runnable {
-		private Player player;
-
-		ResetVisiblesForPlayer(Player player) {
-			this.player = player;
-		}
-
-		public void run() {
-			if (player == null)
-				return;
-			else
-				admins.updateInvisibles(player);
-		}
-	}
 }

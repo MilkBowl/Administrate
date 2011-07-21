@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.milkbowl.administrate.AdminPermissions.Perms;
+import net.milkbowl.administrate.runnable.UpdateInvisibilityTask;
 import net.minecraft.server.Packet20NamedEntitySpawn;
 import net.minecraft.server.Packet29DestroyEntity;
 
@@ -355,7 +356,7 @@ public final class AdminHandler {
 	 * Initial on-command invisibility.  ONLY call this from a command as it initiates a schedule task to go invisible.
 	 * 
 	 */
-	protected void goInvisibleInitial(Player player) {
+	public void goInvisibleInitial(Player player) {
 		if (player == null || !player.isOnline())
 			return;
 
@@ -363,14 +364,14 @@ public final class AdminHandler {
 		goInvisible(player);
 		
 		//Schedule us to remove another entity half a second later (Why is the Client trying to re-add the entity?)
-		plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new UpdateInvisibilityTask(player), 5);
+		plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new UpdateInvisibilityTask(player, this), 5);
 	}
 	
 	/**
 	 * Makes a player go invisible for all online players
 	 * 
 	 */
-	protected void goInvisible(Player player) {
+	public void goInvisible(Player player) {
 		if (player == null || !player.isOnline())
 			return;
 
@@ -395,7 +396,7 @@ public final class AdminHandler {
 	 * Checks all players on the server and updates their visibilty
 	 * 
 	 */
-	protected void goAllInvisible() {
+	public void goAllInvisible() {
 		for (Player pInvis : plugin.getServer().getOnlinePlayers()) {
 			if (isInvisible(pInvis.getName()))
 				goInvisible(pInvis);
@@ -428,7 +429,7 @@ public final class AdminHandler {
 	 * 
 	 * @param pDummy
 	 */
-	protected void updateInvisibles(Player pDummy) {
+	public void updateInvisibles(Player pDummy) {
 		for (Player pInvis : plugin.getServer().getOnlinePlayers())
 			if (isInvisible(pInvis.getName()))
 				invisible(pInvis, pDummy);
@@ -459,25 +460,6 @@ public final class AdminHandler {
 		double distY = Math.pow(loc1.getBlockY() - loc2.getBlockY(), 2);
 
 		return Math.sqrt(distX + distY); 
-	}
-
-	public class UpdateInvisibilityTask implements Runnable {
-		private Player player;
-
-		public UpdateInvisibilityTask() {
-			this(null);
-		}
-
-		public UpdateInvisibilityTask(Player player) {
-			this.player = player;
-		}
-
-		public void run() {
-			if (player == null)
-				goAllInvisible();
-			else
-				goInvisible(player);
-		}
 	}
 
 	/**

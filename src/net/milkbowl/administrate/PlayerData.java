@@ -127,7 +127,9 @@ public class PlayerData {
     }
 
     /**
-     * @param isStealthed the isStealthed to set
+     * Sets whether the player is stealthed or not
+     * 
+     * @param isStealthed
      */
     public void setStealthed(boolean isStealthed) {
         this.stealthed = isStealthed;

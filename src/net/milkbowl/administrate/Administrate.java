@@ -7,9 +7,12 @@ import java.io.File;
 import java.util.Collection;
 import java.util.logging.Logger;
 
+import net.milkbowl.administrate.runnable.ResetVisiblesForPlayer;
+import net.milkbowl.administrate.runnable.UpdateInvisibilityTask;
 import net.milkbowl.vault.permission.Permission;
 
 import org.bukkit.command.CommandExecutor;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.Event.Priority;
 import org.bukkit.plugin.PluginManager;
@@ -76,6 +79,11 @@ public class Administrate extends JavaPlugin {
 		getCommand("admin_bring").setExecutor(cmdExec);
 		getCommand("admin_tp").setExecutor(cmdExec);
 		getCommand("admin_heal").setExecutor(cmdExec);
+		
+		//If this was a reload lets make sure to reload all of our players data
+		for (Player player : this.getServer().getOnlinePlayers()) {
+			loadPlayer(player);
+		}
 	}
 
 	private boolean setupDependencies() {
@@ -93,4 +101,19 @@ public class Administrate extends JavaPlugin {
 	public AdminHandler getAdminHandler() {
 		return adminHandler;
 	}    
+	
+	public void loadPlayer(Player player) {
+		//Try to load the player object from file
+		if (AdminPermissions.hasAny(player)) {
+			if (AdminHandler.loadPlayer(player.getName())) {
+
+				//Make the player go invisible if they have the toggle
+				if (AdminHandler.isInvisible(player.getName()))
+					this.getServer().getScheduler().scheduleSyncDelayedTask(this, new UpdateInvisibilityTask(player, adminHandler));
+			} 
+		}
+
+		//Makes it so players can't rejoin the server to see invisible players
+		this.getServer().getScheduler().scheduleSyncDelayedTask(this, new ResetVisiblesForPlayer(player, adminHandler));
+	}
 }
