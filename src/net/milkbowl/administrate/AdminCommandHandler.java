@@ -88,7 +88,7 @@ public class AdminCommandHandler implements CommandExecutor {
 	}
 
 	private void heal(Player player, String[] args) {
-		if (!AdminPermissions.has(player, Perms.ADMINHEAL) || !AdminPermissions.has(player, Perms.ANYHEAL)) {
+		if (!AdminPermissions.has(player, Perms.ADMINHEAL) && !AdminPermissions.has(player, Perms.ANYHEAL)) {
 			player.sendMessage("You don't have permission to use that command.");
 			return;
 		} else if (!AdminHandler.isAdminMode(player.getName()) && !AdminPermissions.has(player, Perms.ANYHEAL)) {
@@ -132,7 +132,7 @@ public class AdminCommandHandler implements CommandExecutor {
 	}
 
 	private void bring(Player player, String[] args) {
-		if (!AdminPermissions.has(player, Perms.ADMINTP) || !AdminPermissions.has(player, Perms.ANYTP)) {
+		if (!AdminPermissions.has(player, Perms.ADMINTP) && !AdminPermissions.has(player, Perms.ANYTP)) {
 			player.sendMessage("You don't have permission to use that command.");
 			return;
 		} else if (!AdminHandler.isAdminMode(player.getName()) && !AdminPermissions.has(player, Perms.ANYTP)) {
@@ -166,7 +166,7 @@ public class AdminCommandHandler implements CommandExecutor {
 
 	private void put(Player player, String[] args) {
 		Block block = player.getTargetBlock(null, 50).getRelative(BlockFace.UP);
-		if (!AdminPermissions.has(player, Perms.ADMINTP) || !AdminPermissions.has(player, Perms.ANYTP)) {
+		if (!AdminPermissions.has(player, Perms.ADMINTP) && !AdminPermissions.has(player, Perms.ANYTP)) {
 			player.sendMessage("You don't have permission to use that command");
 			return;
 		} else if (!AdminHandler.isAdminMode(player.getName()) && !AdminPermissions.has(player, Perms.ANYTP)) {
@@ -204,7 +204,7 @@ public class AdminCommandHandler implements CommandExecutor {
 	}
 
 	private void tp(Player player, String[] args) {
-		if (!AdminPermissions.has(player, Perms.ADMINTP) || !AdminPermissions.has(player, Perms.ANYTP)) {
+		if (!AdminPermissions.has(player, Perms.ADMINTP) && !AdminPermissions.has(player, Perms.ANYTP)) {
 			player.sendMessage("You don't have permission to use that command");
 			return;
 		} else if (!AdminHandler.isAdminMode(player.getName()) && !AdminPermissions.has(player, Perms.ANYTP)) {
