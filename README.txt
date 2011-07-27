@@ -11,7 +11,7 @@ Main Features:
 	heal
 	fakelogging
 
-This work is Licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 3.0 unported License.  It is available at: http://creativecommons.org/licenses/by-nc-sa/3.0/
+This work is Licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 unported License.  It is available at: http://creativecommons.org/licenses/by-nc-nd/3.0/
 
 Permissions:
 	administrate.allmessages 	- receive messages about all players regardless of their status
