@@ -11,8 +11,6 @@ Main Features:
 	heal
 	fakelogging
 
-This work is Licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 unported License.  It is available at: http://creativecommons.org/licenses/by-nc-nd/3.0/
-
 Permissions:
 	administrate.allmessages 	- receive messages about all players regardless of their status
 	administrate.stealth		- stealth login/logoff when enabled + make it so people can't see you're online with linking /who
@@ -27,3 +25,7 @@ Permissions:
 	administrate.status			- allows a player to get status of another player
 	administrate.heal
 	administrate.tp
+
+This work is Licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 unported License.  It is available at: http://creativecommons.org/licenses/by-nc-nd/3.0/
+
+By Forking this project you agree that you have read and understand this license, and allow any code you publish back onto github to be incorporated into the project.
