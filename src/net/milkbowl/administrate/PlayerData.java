@@ -16,7 +16,8 @@ import java.util.Properties;
 public class PlayerData {
     private String world;
     private int[] xyz;
-    private boolean adminMode;
+    private float[] yawPitch;
+	private boolean adminMode;
     private boolean god;
     private boolean invisible;
     private boolean noPickup;
@@ -58,6 +59,14 @@ public class PlayerData {
     public void setXyz(int[] xyz) {
         this.xyz = xyz;
     }
+
+    public float[] getYawPitch() {
+		return yawPitch;
+	}
+
+	public void setYawPitch(float[] yawPitch) {
+		this.yawPitch = yawPitch;
+	}
 
     /**
      * @return the AdminMode
@@ -143,7 +152,8 @@ public class PlayerData {
     public String locationString() {
         String split = ",";
         if (world != null || xyz != null)
-            return world + split + " x: " + xyz[0] + split + " y: " + xyz[1] + split + " z: " + xyz[2];
+        	return world + split + " x: " + xyz[0] + split + " y: " + xyz[1] + split + " z: " + xyz[2]
+        		+ " pitch: " + yawPitch[0] + " yaw: " + yawPitch[1];
         else
             return "nowhere";
     }
@@ -166,6 +176,10 @@ public class PlayerData {
             props.setProperty("x", Integer.toString(xyz[0]));
             props.setProperty("y", Integer.toString(xyz[1]));
             props.setProperty("z", Integer.toString(xyz[2]));
+        }
+        if (yawPitch != null) {
+            props.setProperty("yaw", Float.toString(yawPitch[0]));
+            props.setProperty("pitch", Float.toString(yawPitch[1]));
         }
         try {
             props.store(new FileOutputStream(Administrate.playerDataPath + fileName + ".properties"), null);
@@ -199,6 +213,12 @@ public class PlayerData {
         } catch (NumberFormatException e) {
             xyz = null;
         }
+        try {
+        	yawPitch = new float[] {Float.valueOf(props.getProperty("yaw")), Float.valueOf(props.getProperty("pitch"))};
+        } catch (NumberFormatException e) {
+        	yawPitch = null;
+        }
+        
         world = props.getProperty("world");
         god = Boolean.parseBoolean(props.getProperty("god", Boolean.toString(god)));
         invisible = Boolean.parseBoolean(props.getProperty("invisible", Boolean.toString(invisible)));

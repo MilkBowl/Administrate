@@ -384,7 +384,8 @@ public class AdminCommandHandler implements CommandExecutor {
 			//If this player is already in admin-mode - toggle it off.
 			if(AdminHandler.isAdminMode(playerName)) {
 				AdminHandler.setAdminMode(playerName, false);
-				AdminHandler.fakeLog(playerName, true);
+				if( AdminPermissions.has(player, Perms.FAKELOG) )
+					AdminHandler.fakeLog(playerName, true);
 				admins.goVisible(player);
 				player.sendMessage(ChatColor.RED + "Admin-Mode " + ChatColor.WHITE + "is now " + ChatColor.RED + "disabled.");
 				//Return the player a half-second later
@@ -395,7 +396,8 @@ public class AdminCommandHandler implements CommandExecutor {
 					AdminHandler.add(playerName);
 				//Enable adminmode and send the message
 				AdminHandler.setAdminMode(playerName, true);
-				AdminHandler.fakeLog(playerName, false);
+				if( AdminPermissions.has(player, Perms.FAKELOG) )
+					AdminHandler.fakeLog(playerName, true);
 				admins.goInvisibleInitial(player);
 				player.sendMessage(ChatColor.GREEN + "Admin-Mode " + ChatColor.WHITE + "is now " + ChatColor.GREEN + "enabled.");
 				//Save the players current location as their origin.

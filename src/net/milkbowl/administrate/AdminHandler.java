@@ -96,6 +96,7 @@ public final class AdminHandler {
 		else {
 			admins.get(playerName).setWorld(origin.getWorld().getName());
 			admins.get(playerName).setXyz(new int[] {origin.getBlockX(), origin.getBlockY(), origin.getBlockZ()});
+			admins.get(playerName).setYawPitch(new float[] {origin.getYaw(), origin.getPitch()});
 			return true;
 		}
 	}
@@ -341,7 +342,8 @@ public final class AdminHandler {
 			try {
 				//Try to get the world + location at the players origin and teleport them there.
 				int[] xyz = admins.get(player.getName()).getXyz();
-				Location loc = new Location(plugin.getServer().getWorld(admins.get(player.getName()).getWorld()), xyz[0], xyz[1], xyz[2]);
+				float[] yawPitch = admins.get(player.getName()).getYawPitch();
+				Location loc = new Location(plugin.getServer().getWorld(admins.get(player.getName()).getWorld()), xyz[0], xyz[1], xyz[2], yawPitch[0], yawPitch[1]);
 				loc.getWorld().loadChunk(loc.getWorld().getChunkAt(loc));
 				player.sendMessage("Returning you to: " + ChatColor.AQUA + admins.get(player.getName()).locationString());
 				player.teleport(loc);
