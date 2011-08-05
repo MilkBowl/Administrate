@@ -108,11 +108,7 @@ public class AdminPlayerListener extends PlayerListener {
 			return;
 
 		Player player = event.getPlayer();
-		if (!AdminHandler.isInvisible(player.getName())) {
-			//For non-invis players just update their sight 10 ticks later.
-			plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new AfterTeleInvis(player, event.getTo(), false, plugin.adminHandler), 10);
-			return;
-		} else if (!event.getFrom().getWorld().equals(event.getTo().getWorld()) || AdminHandler.getDistance(event.getFrom(), event.getTo()) > 50) {
+		if (!event.getFrom().getWorld().equals(event.getTo().getWorld()) || AdminHandler.getDistance(event.getFrom(), event.getTo()) > 50) {
 			if (!teleports.contains(player.getName())) {
 				teleports.add(player.getName());
 				//For Invisible players lets teleport them to a special location first if they are a long ways away or on a different world
@@ -121,7 +117,7 @@ public class AdminPlayerListener extends PlayerListener {
 				event.setTo(new Location(toLoc.getWorld(), toLoc.getX(), 127, toLoc.getZ()));
 
 				//Make the player invulnerable for 20 ticks - just in case they teleport into walls
-				player.setNoDamageTicks(40);
+				player.setNoDamageTicks(20);
 				//Create the actual location we want to send the player to in this teleport.
 				plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new AfterTeleInvis(player, toLoc, true, plugin.adminHandler), 10);
 				return;
@@ -130,7 +126,7 @@ public class AdminPlayerListener extends PlayerListener {
 			}
 		} 
 		//update this players view
-		plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new AfterTeleInvis(player, event.getTo(), false, plugin.adminHandler), 10);
+		plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new AfterTeleInvis(player, event.getTo(), false, plugin.adminHandler), 8);
 		return;
 
 

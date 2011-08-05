@@ -364,7 +364,7 @@ public final class AdminHandler {
 		goInvisible(player);
 		
 		//Schedule us to remove another entity half a second later (Why is the Client trying to re-add the entity?)
-		plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new UpdateInvisibilityTask(player, this), 5);
+		plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new UpdateInvisibilityTask(player, this), 8);
 	}
 	
 	/**
