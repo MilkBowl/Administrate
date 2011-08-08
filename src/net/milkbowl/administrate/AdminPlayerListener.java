@@ -116,7 +116,7 @@ public class AdminPlayerListener extends PlayerListener {
 				//Instead send them to the top of the world in the same chunk
 				event.setTo(new Location(toLoc.getWorld(), toLoc.getX(), 127, toLoc.getZ()));
 
-				//Make the player invulnerable for 20 ticks - just in case they teleport into walls
+				//Make the player invulnerable - just in case they teleport into walls
 				player.setNoDamageTicks(20);
 				//Create the actual location we want to send the player to in this teleport.
 				plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new AfterTeleInvis(player, toLoc, true, plugin.adminHandler), 10);
