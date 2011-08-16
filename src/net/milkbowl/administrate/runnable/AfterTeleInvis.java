@@ -12,11 +12,12 @@ public class AfterTeleInvis implements Runnable {
 	private Location loc;
 	private boolean isInvis;
 	private AdminHandler aHandler;
+	private boolean update;
 
-	public AfterTeleInvis(Player player, Location loc, boolean val, AdminHandler aHandler) {
+	public AfterTeleInvis(Player player, Location loc, boolean update, AdminHandler aHandler) {
 		this.player = player;
 		this.loc = loc;
-		this.isInvis = val;
+		this.isInvis = AdminHandler.isInvisible(player.getName());
 		this.aHandler = aHandler;
 	}
 
@@ -32,7 +33,8 @@ public class AfterTeleInvis implements Runnable {
 					//remove their fall distance just in case
 					player.setFallDistance(0);
 			}   
-		} else {
+		} 
+		if (update) {
 			aHandler.updateInvisibles(player);
 		}
 

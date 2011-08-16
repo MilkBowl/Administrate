@@ -31,7 +31,7 @@ public class AdminPlayerListener extends PlayerListener {
 	AdminPlayerListener(Administrate plugin) {
 		this.plugin = plugin;
 	}
-	
+
 	private Set<String> teleports = new HashSet<String>();
 
 	public void onPlayerRespawn(PlayerRespawnEvent event) {
@@ -124,11 +124,11 @@ public class AdminPlayerListener extends PlayerListener {
 			} else {
 				teleports.remove(player.getName());
 			}
-		} 
+		}
 		//update this players view
 		plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new AfterTeleInvis(player, event.getTo(), false, plugin.adminHandler), 8);
 		return;
-
+		
 
 	}
 
