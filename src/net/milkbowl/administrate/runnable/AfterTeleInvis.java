@@ -23,7 +23,7 @@ public class AfterTeleInvis implements Runnable {
 
 	public void run() {
 		//If this player is invisible lets teleport them to a temporary location before teleporting them to their specified location
-		if (isInvis) {
+		if (isInvis && !update) {
 			World world = player.getWorld();
 			if (world.getPlayers().contains(player)) {
 				//Set them invisible
