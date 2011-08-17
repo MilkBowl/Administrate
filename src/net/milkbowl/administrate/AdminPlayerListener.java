@@ -108,27 +108,29 @@ public class AdminPlayerListener extends PlayerListener {
 			return;
 
 		Player player = event.getPlayer();
-		if ((!event.getFrom().getWorld().equals(event.getTo().getWorld()) || AdminHandler.getDistance(event.getFrom(), event.getTo()) > 50) && AdminHandler.isInvisible(player.getName())) {
-			if (!teleports.contains(player.getName())) {
-				teleports.add(player.getName());
-				//For Invisible players lets teleport them to a special location first if they are a long ways away or on a different world
-				Location toLoc = event.getTo();
-				//Instead send them to the top of the world in the same chunk
-				event.setTo(new Location(toLoc.getWorld(), toLoc.getX(), 127, toLoc.getZ()));
+		if (AdminHandler.isInvisible(player.getName())) {
+			if (!event.getFrom().getWorld().equals(event.getTo().getWorld()) || AdminHandler.getDistance(event.getFrom(), event.getTo()) > 2500 ) {
+				if (!teleports.contains(player.getName())) {
+					teleports.add(player.getName());
+					//For Invisible players lets teleport them to a special location first if they are a long ways away or on a different world
+					Location toLoc = event.getTo();
+					//Instead send them to the top of the world in the same chunk
+					event.setTo(new Location(toLoc.getWorld(), toLoc.getX(), 127, toLoc.getZ()));
 
-				//Make the player invulnerable - just in case they teleport into walls
-				player.setNoDamageTicks(20);
-				//Create the actual location we want to send the player to in this teleport.
-				plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new AfterTeleInvis(player, toLoc, false, plugin.adminHandler), 10);
-				return;
-			} else {
-				teleports.remove(player.getName());
+					//Make the player invulnerable - just in case they teleport into walls
+					player.setNoDamageTicks(20);
+					//Create the actual location we want to send the player to in this teleport.
+					plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new AfterTeleInvis(player, toLoc, false, plugin.adminHandler), 10);
+					return;
+				} else {
+					teleports.remove(player.getName());
+				}
 			}
 		}
 		//update this players view
 		plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new AfterTeleInvis(player, event.getTo(), true, plugin.adminHandler), 8);
 		return;
-		
+
 
 	}
 

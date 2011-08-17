@@ -19,6 +19,7 @@ public class AfterTeleInvis implements Runnable {
 		this.loc = loc;
 		this.isInvis = AdminHandler.isInvisible(player.getName());
 		this.aHandler = aHandler;
+		this.update = update;
 	}
 
 	public void run() {

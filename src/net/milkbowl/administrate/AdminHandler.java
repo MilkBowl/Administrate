@@ -459,7 +459,7 @@ public final class AdminHandler {
 		double distX = Math.pow(loc1.getBlockX() - loc2.getBlockX(), 2);
 		double distY = Math.pow(loc1.getBlockY() - loc2.getBlockY(), 2);
 
-		return Math.sqrt(distX + distY); 
+		return distX + distY; 
 	}
 
 	/**
