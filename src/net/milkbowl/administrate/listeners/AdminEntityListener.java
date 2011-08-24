@@ -1,8 +1,11 @@
 /**
  * 
  */
-package net.milkbowl.administrate;
+package net.milkbowl.administrate.listeners;
 
+import net.milkbowl.administrate.AdminHandler;
+import net.milkbowl.administrate.AdminPermissions;
+import net.milkbowl.administrate.Administrate;
 import net.milkbowl.administrate.AdminPermissions.Perms;
 
 import org.bukkit.entity.Player;
@@ -18,7 +21,8 @@ import org.bukkit.event.entity.EntityTargetEvent;
 public class AdminEntityListener extends EntityListener {
         
 	private Administrate plugin;
-    AdminEntityListener(Administrate plugin) {
+	
+    public AdminEntityListener(Administrate plugin) {
     	this.plugin = plugin;
     }
     

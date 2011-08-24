@@ -1,11 +1,14 @@
 /**
  * 
  */
-package net.milkbowl.administrate;
+package net.milkbowl.administrate.listeners;
 
 import java.util.HashSet;
 import java.util.Set;
 
+import net.milkbowl.administrate.AdminHandler;
+import net.milkbowl.administrate.AdminPermissions;
+import net.milkbowl.administrate.Administrate;
 import net.milkbowl.administrate.AdminPermissions.Perms;
 import net.milkbowl.administrate.runnable.AfterTeleInvis;
 import net.milkbowl.administrate.runnable.ResetVisiblesForPlayer;
@@ -28,13 +31,16 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 public class AdminPlayerListener extends PlayerListener {
 	private Administrate plugin;
 
-	AdminPlayerListener(Administrate plugin) {
+	public AdminPlayerListener(Administrate plugin) {
 		this.plugin = plugin;
 	}
 
 	private Set<String> teleports = new HashSet<String>();
 
 	public void onPlayerRespawn(PlayerRespawnEvent event) {
+		if (Administrate.useSpout)
+			return;
+		
 		Player player = event.getPlayer();
 		String playerName = player.getName();
 		if (AdminHandler.isInvisible(playerName))
@@ -77,13 +83,15 @@ public class AdminPlayerListener extends PlayerListener {
 				plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new DelayedMessage(player, message), 10);
 
 				//Make the player go invisible if they have the toggle
-				if (AdminHandler.isInvisible(playerName))
+				if (AdminHandler.isInvisible(playerName) && !Administrate.useSpout)
 					plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new UpdateInvisibilityTask(player, plugin.adminHandler));
 			} 
 		}
 
 		//Makes it so players can't rejoin the server to see invisible players
-		plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new ResetVisiblesForPlayer(player, plugin.adminHandler));
+		if (!Administrate.useSpout) {
+			plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new ResetVisiblesForPlayer(player, plugin.adminHandler));
+		}
 	}
 
 	public void onPlayerQuit(PlayerQuitEvent event) {
@@ -104,7 +112,7 @@ public class AdminPlayerListener extends PlayerListener {
 	}
 
 	public void onPlayerTeleport (PlayerTeleportEvent event) {
-		if (event.isCancelled())
+		if (event.isCancelled() || Administrate.useSpout)
 			return;
 
 		Player player = event.getPlayer();

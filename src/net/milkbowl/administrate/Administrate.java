@@ -7,14 +7,18 @@ import java.io.File;
 import java.util.Collection;
 import java.util.logging.Logger;
 
+import net.milkbowl.administrate.listeners.AdminEntityListener;
+import net.milkbowl.administrate.listeners.AdminPlayerListener;
+import net.milkbowl.administrate.listeners.AdminPluginListener;
 import net.milkbowl.administrate.runnable.ResetVisiblesForPlayer;
 import net.milkbowl.administrate.runnable.UpdateInvisibilityTask;
 import net.milkbowl.vault.permission.Permission;
 
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 import org.bukkit.event.Event.Priority;
+import org.bukkit.event.Event.Type;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -28,8 +32,11 @@ public class Administrate extends JavaPlugin {
 	protected static final Logger log = Logger.getLogger("Minecraft");
 	private AdminPlayerListener playerListener = new AdminPlayerListener(this);
 	private AdminEntityListener entityListener = new AdminEntityListener(this);
+	private AdminPluginListener pluginListener = new AdminPluginListener(this);
+	private final AdminPacketManager packetManager = new AdminPacketManager();
 	public AdminHandler adminHandler;
 	public CommandExecutor cmdExec;
+	public static boolean useSpout = false;
 
 	public static Permission perms;
 	public static final String plugName = "[Administrate]";
@@ -49,19 +56,23 @@ public class Administrate extends JavaPlugin {
 			return;
 		}
 		
+		setupOptionals();
+		
 		//Make our directories.
 		File dir = new File(playerDataPath);
 		dir.mkdirs();
 
 		//Register our events
 		PluginManager pm = getServer().getPluginManager();
-		pm.registerEvent(Event.Type.PLAYER_JOIN, playerListener, Priority.Highest, this);
-		pm.registerEvent(Event.Type.PLAYER_QUIT, playerListener, Priority.Highest, this);
-		pm.registerEvent(Event.Type.PLAYER_TELEPORT, playerListener, Priority.Highest, this);
-		pm.registerEvent(Event.Type.PLAYER_PICKUP_ITEM, playerListener, Priority.Highest, this);
-		pm.registerEvent(Event.Type.ENTITY_DAMAGE, entityListener, Priority.Highest, this);
-		pm.registerEvent(Event.Type.ENTITY_COMBUST, entityListener, Priority.Highest, this);
-		pm.registerEvent(Event.Type.ENTITY_TARGET, entityListener, Priority.Highest, this);
+		pm.registerEvent(Type.PLAYER_JOIN, playerListener, Priority.Highest, this);
+		pm.registerEvent(Type.PLAYER_QUIT, playerListener, Priority.Highest, this);
+		pm.registerEvent(Type.PLAYER_TELEPORT, playerListener, Priority.Highest, this);
+		pm.registerEvent(Type.PLAYER_PICKUP_ITEM, playerListener, Priority.Highest, this);
+		pm.registerEvent(Type.ENTITY_DAMAGE, entityListener, Priority.Highest, this);
+		pm.registerEvent(Type.ENTITY_COMBUST, entityListener, Priority.Highest, this);
+		pm.registerEvent(Type.ENTITY_TARGET, entityListener, Priority.Highest, this);
+		pm.registerEvent(Type.PLUGIN_ENABLE, pluginListener, Priority.Monitor, this);
+		pm.registerEvent(Type.PLUGIN_DISABLE, pluginListener, Priority.Monitor, this);
 
 		adminHandler = new AdminHandler(this);
 		//Register our commands
@@ -86,6 +97,16 @@ public class Administrate extends JavaPlugin {
 		}
 	}
 
+	private void setupOptionals() {
+		Plugin spout = getServer().getPluginManager().getPlugin("Spout");
+		if (spout != null) {
+			if (spout.isEnabled()) {
+				useSpout = true;
+				packetManager.enable();
+			}
+		}
+	}
+	
 	private boolean setupDependencies() {
         Collection<RegisteredServiceProvider<Permission>> perms = this.getServer().getServicesManager().getRegistrations(net.milkbowl.vault.permission.Permission.class);
         for(RegisteredServiceProvider<Permission> perm : perms) {
@@ -102,6 +123,13 @@ public class Administrate extends JavaPlugin {
 		return adminHandler;
 	}    
 	
+	/**
+	 * @return the packetManager
+	 */
+	public AdminPacketManager getPacketManager() {
+		return packetManager;
+	}
+
 	public void loadPlayer(Player player) {
 		//Try to load the player object from file
 		if (AdminPermissions.hasAny(player)) {

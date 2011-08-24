@@ -29,8 +29,11 @@
         <get src="http://ci.milkbowl.net/job/CraftBukkit/lastSuccessfulBuild/artifact/target/craftbukkit-0.0.1-SNAPSHOT.jar"
         	dest="lib/craftbukkit.jar" verbose="false" usetimestamp="true" />
         <echo>- Vault</echo>
-	<get src="http://ci.milkbowl.net/job/Vault/lastSuccessfulBuild/artifact/Vault.jar"
-		dest="lib/Vault.jar" verbose="false" usetimestamp="true"/>
+		<get src="http://ci.milkbowl.net/job/Vault/lastSuccessfulBuild/artifact/Vault.jar"
+			dest="lib/Vault.jar" verbose="false" usetimestamp="true"/>
+    	<echo>- Spout</echo>
+    	<get src="http://ci.craftfire.com/view/SpoutDev/job/Spout/lastSuccessfulBuild/"
+    		dest="lib/Spout.jar" verbose="false" usetimestap="true"/>
 
     </target>
   
