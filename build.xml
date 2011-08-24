@@ -32,7 +32,7 @@
 		<get src="http://ci.milkbowl.net/job/Vault/lastSuccessfulBuild/artifact/Vault.jar"
 			dest="lib/Vault.jar" verbose="false" usetimestamp="true"/>
     	<echo>- Spout</echo>
-    	<get src="http://ci.craftfire.com/view/SpoutDev/job/Spout/lastSuccessfulBuild/"
+    	<get src="http://ci.craftfire.com/view/SpoutDev/job/Spout/lastSuccessfulBuild/spout-dev-SNAPSHOT.jar"
     		dest="lib/Spout.jar" verbose="false" usetimestamp="true"/>
 
     </target>
